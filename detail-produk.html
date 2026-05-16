@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgMain relative">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="hover:text-primary transition-colors">Artikel</a>
+                    <a href="about.html" class="hover:text-primary transition-colors">About</a>
+                    <a href="history-transaksi.html" class="hover:text-primary transition-colors">Orders</a>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center space-x-5">
+                    <!-- Cart Icon -->
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    
+                    <!-- Login Button -->
+                    <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
+                        Log In
+                    </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button class="md:hidden hover:text-primary focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="container mx-auto px-4 lg:px-8 py-6 text-sm font-medium text-textMuted border-b border-gray-100">
+        <a href="index.html" class="hover:text-primary transition-colors">Home</a> &rsaquo; 
+        <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a> &rsaquo; 
+        <a href="#" class="hover:text-primary transition-colors">Accessories</a> &rsaquo; 
+        <span class="text-textMain">Official Lightstick Ver.2</span>
+    </div>
+
+    <!-- Product Detail Section -->
+    <section class="py-8 lg:py-16 mb-16">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+                
+                <!-- Left: Product Images -->
+                <div class="w-full lg:w-1/2">
+                    <!-- Main Large Image -->
+                    <div class="bg-gray-50 rounded-3xl overflow-hidden aspect-square border border-gray-100 flex items-center justify-center p-8 relative">
+                        <span class="absolute top-6 left-6 bg-white shadow-sm border border-gray-100 text-textMain text-xs font-bold px-3 py-1.5 rounded-lg z-10">BEST SELLER</span>
+                        <img src="https://placehold.co/800x800/f3f4f6/f72585?text=Lightstick+Ver.2" alt="Product Image" class="w-full h-full object-contain">
+                    </div>
+                    
+                    <!-- Thumbnails -->
+                    <div class="grid grid-cols-4 gap-4 mt-4">
+                        <div class="aspect-square bg-gray-50 rounded-2xl border-2 border-primary overflow-hidden cursor-pointer">
+                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Merch" alt="Thumb 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors">
+                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors">
+                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors flex items-center justify-center relative">
+                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 4" class="w-full h-full object-cover opacity-50">
+                            <span class="absolute font-semibold text-textMain">+2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Product Info -->
+                <div class="w-full lg:w-1/2 flex flex-col lg:justify-center">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="flex text-yellow-400 text-sm">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <span class="text-xs text-textMuted font-medium underline cursor-pointer">(128 reviews)</span>
+                    </div>
+
+                    <h1 class="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl mb-4 text-textMain leading-tight">Official Lightstick Ver.2</h1>
+                    
+                    <div class="flex items-center gap-4 mb-6">
+                        <p class="font-poppins font-bold text-3xl text-primary">Rp 450,000</p>
+                        <p class="text-lg text-textMuted line-through decoration-gray-300">Rp 500,000</p>
+                    </div>
+                    
+                    <p class="text-textMuted leading-relaxed mb-8 font-medium">
+                        The official BLACKPINK Lightstick Version 2 features an upgraded design with app connectivity, allowing synchronization with concert lighting. Powered by 3 AAA batteries (not included).
+                    </p>
+
+                    <!-- Divider -->
+                    <div class="w-full h-px bg-gray-100 mb-8"></div>
+
+                    <!-- Qty Selector -->
+                    <div class="mb-8 flex items-center gap-6">
+                        <h4 class="font-semibold text-sm text-textMain w-20">Quantity</h4>
+                        <div class="flex items-center bg-white border border-gray-200 rounded-xl h-12 w-32 shadow-sm overflow-hidden">
+                            <button class="w-10 h-full text-textMuted hover:text-primary hover:bg-gray-50 transition-colors text-lg" onclick="updateQty(-1)">-</button>
+                            <input type="number" id="qtyInput" value="1" class="flex-1 w-full bg-transparent text-center font-semibold text-textMain focus:outline-none" readonly>
+                            <button class="w-10 h-full text-textMuted hover:text-primary hover:bg-gray-50 transition-colors text-lg" onclick="updateQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <button onclick="masukKeranjang()" class="flex-1 bg-[#F72585] text-white py-3 px-6 rounded-lg font-semibold shadow-md hover:bg-[#d4146a] transition-all flex justify-center items-center gap-2">
+                            🛒 Tambah ke Keranjang
+                        </button>
+                        <button onclick="beliLangsung()" class="flex-1 border-2 border-[#F72585] text-[#F72585] py-3 px-6 rounded-lg font-semibold hover:bg-pink-50 transition-all flex justify-center items-center gap-2">
+                            ⚡ Beli Sekarang
+                        </button>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="bg-bgAlt rounded-2xl p-4 border border-gray-100">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center gap-3 text-textMain font-medium">
+                                <div class="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-sm text-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <span>100% Authentic Merch</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-textMain font-medium">
+                                <div class="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-sm text-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span>Fast Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Footer -->
+    <footer class="bg-darkFooter text-gray-300 py-12">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide text-white block mb-4">
+                        BLINK<span class="text-primary">CO</span>
+                    </a>
+                    <p class="text-sm text-gray-400">Your #1 Stop for Premium Merchandise.</p>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Shop</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">All Products</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Apparel</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Music</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Accessories</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="hover:text-primary transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Shipping Returns</a></li>
+                        <li><a href="contact.html" class="hover:text-primary transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+                <p>&copy; 2026 BLINKCO. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-white transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS References -->
+    <script src="js/script.js"></script>
+
+    <!-- Toast Notification Container & Detail Page Logic -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <script>
+        // Quantity Logic
+        let currentQty = 1;
+        function updateQty(change) {
+            currentQty += change;
+            if (currentQty < 1) currentQty = 1;
+            document.getElementById('qtyInput').value = currentQty;
+        }
+    </script>
+    <script>
+        function checkLogin() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) {
+                alert('Silakan Log In terlebih dahulu untuk mulai berbelanja!');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        function saveItemToDB() {
+            const qtyInput = document.getElementById('qtyInput');
+            const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+            const produk = {
+                id: 'prod_lightstick',
+                name: 'Official Lightstick Ver.2',
+                price: 450000,
+                qty: qty,
+                image: 'https://placehold.co/400x400/f3f4f6/f72585?text=Lightstick'
+            };
+            
+            let keranjang = JSON.parse(localStorage.getItem('blinkco_cart')) || [];
+            if (!Array.isArray(keranjang)) keranjang = []; 
+            
+            // Update qty if item already exists
+            const existIndex = keranjang.findIndex(item => item.id === produk.id);
+            if (existIndex > -1) {
+                keranjang[existIndex].qty += qty;
+            } else {
+                keranjang.push(produk);
+            }
+            
+            localStorage.setItem('blinkco_cart', JSON.stringify(keranjang));
+        }
+
+        function masukKeranjang() {
+            if (!checkLogin()) return; // Stop if not logged in
+            saveItemToDB();
+            alert('✅ Produk berhasil dimasukkan ke keranjang!');
+            window.location.reload(); // Refresh to update cart badge
+        }
+
+        function beliLangsung() {
+            if (!checkLogin()) return; // Stop if not logged in
+            saveItemToDB();
+            // Redirect directly to checkout without alert
+            window.location.href = 'pembayaran.html';
+        }
+    </script>
+</body>
+</html>

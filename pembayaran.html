@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Spinner for loading state */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-montserrat text-textMain bg-bgMain relative">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 lg:px-8 py-12 min-h-[60vh]">
+        <h1 class="font-poppins font-bold text-3xl mb-8 text-textMain">Checkout</h1>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left: Form -->
+            <div class="w-full lg:w-2/3">
+                <form id="checkoutForm" class="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm">
+                    <h2 class="font-poppins font-semibold text-xl mb-6">Shipping Address</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">First Name</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt font-medium text-textMain">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Last Name</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt font-medium text-textMain">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-2">Full Address</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt font-medium text-textMain" placeholder="Street Name, Building, House No.">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">City</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt font-medium text-textMain">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Postal Code</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt font-medium text-textMain">
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-100 pt-8 mt-4">
+                        <h2 class="font-poppins font-semibold text-xl mb-6">Payment Method</h2>
+                        <div class="bg-bgAlt border border-gray-200 rounded-lg p-4 flex items-center justify-between mb-8 cursor-pointer hover:border-primary transition-colors">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" checked name="payment" class="w-4 h-4 text-primary focus:ring-primary">
+                                <span class="font-medium">Midtrans Payment Gateway</span>
+                            </div>
+                            <img src="https://placehold.co/80x30/FFFFFF/9CA3AF?text=Midtrans" alt="Midtrans" class="rounded shadow-sm">
+                        </div>
+
+                        <button type="submit" id="payButton" class="w-full bg-primary text-white font-semibold py-4 rounded-xl hover:bg-[#e01970] transition-all shadow-soft flex items-center justify-center gap-2">
+                            <span>Bayar Sekarang</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right: Micro Summary -->
+            <div class="w-full lg:w-1/3">
+                <div class="bg-bgAlt border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-28">
+                    <h2 class="font-poppins font-semibold text-lg mb-6">Order Total</h2>
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-200 text-sm font-medium text-textMuted" id="checkout-items">
+                        <!-- JS injected item list -->
+                    </div>
+                    <div class="flex justify-between font-semibold text-xl text-textMain">
+                        <span>Total</span>
+                        <span id="checkout-total">Rp 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Success Simulator -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-95 transition-transform duration-300" id="modalContent">
+            <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h3 class="font-poppins font-bold text-2xl text-textMain mb-2">Payment Successful!</h3>
+            <p class="text-textMuted font-medium mb-8">Your transaction via Snap has been completed.</p>
+            <div class="spinner w-8 h-8 !border-gray-200 !border-t-primary mb-4"></div>
+            <p class="text-xs text-textMuted font-medium">Redirecting to order history...</p>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            window.location.href = 'index.html';
+        }
+        const currentUser = JSON.parse(userStr);
+
+        // Render mini summary
+        const cartStr = localStorage.getItem('blinkco_cart');
+        let cartTotal = 0;
+        let cartItemsData = [];
+        let itemsForApi = [];
+        
+        if (cartStr) {
+            const cart = JSON.parse(cartStr);
+            cartTotal = cart.total;
+            cartItemsData = cart.items || [];
+            
+            if (cartItemsData.length === 0 && (!cart.length || cart.length === 0)) {
+                 window.location.href = 'index.html';
+            }
+
+            if(Array.isArray(cart)) {
+                // If the cart structure is just an array
+                cartItemsData = cart;
+                cartTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                itemsForApi = cart.map(item => ({ id: item.id, qty: item.qty, price: item.price, name: item.name }));
+            } else {
+                // If it has items property
+                const itemCounts = {};
+                cartItemsData.forEach(item => {
+                    if(!itemCounts[item.id]) itemCounts[item.id] = { name: item.name, quantity: 0, price: item.price };
+                    itemCounts[item.id].quantity += (item.qty || 1);
+                });
+                itemsForApi = Object.keys(itemCounts).map(id => ({
+                    id: id,
+                    qty: itemCounts[id].quantity,
+                    price: itemCounts[id].price,
+                    name: itemCounts[id].name
+                }));
+            }
+
+            let html = '';
+            itemsForApi.forEach(i => {
+                const name = i.name || 'Product';
+                html += `
+                    <div class="flex justify-between">
+                        <span>${i.qty}x ${name}</span>
+                        <span class="text-textMain">${formatRupiah(i.price * i.qty)}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('checkout-items').innerHTML = html;
+            document.getElementById('checkout-total').textContent = formatRupiah(cartTotal);
+        } else {
+            // Prevent checkout if cart empty
+            window.location.href = 'index.html';
+        }
+
+        // Handle Midtrans Simulation & API Checkout
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const payBtn = document.getElementById('payButton');
+            payBtn.innerHTML = '<div class="spinner"></div> <span>Memproses...</span>';
+            payBtn.classList.add('opacity-80', 'pointer-events-none');
+            
+            // Get shipping address details
+            const inputs = this.querySelectorAll('input[type="text"]');
+            const firstName = inputs[0].value;
+            const lastName = inputs[1].value;
+            const fullAddress = inputs[2].value;
+            const city = inputs[3].value;
+            const postalCode = inputs[4].value;
+            const shippingStr = `${firstName} ${lastName}, ${fullAddress}, ${city}, ${postalCode}`;
+
+            const checkoutData = {
+                user_id: currentUser.id || null, 
+                shipping_address: shippingStr,
+                total_amount: cartTotal,
+                items: itemsForApi
+            };
+
+            fetch('api/checkout.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(checkoutData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // 1. Clear Cart
+                    localStorage.removeItem('blinkco_cart');
+                    if(typeof updateCartBadge === 'function') updateCartBadge();
+                    
+                    // 2. Show Simulated Midtrans Modal & Alert
+                    alert("Pembayaran Berhasil!");
+                    const modal = document.getElementById('successModal');
+                    const content = document.getElementById('modalContent');
+                    modal.classList.remove('hidden');
+                    setTimeout(() => content.classList.remove('scale-95'), 10);
+                    
+                    // 3. Redirect
+                    setTimeout(() => {
+                        window.location.href = 'history-transaksi.html';
+                    }, 2500);
+                } else {
+                    alert('Checkout failed: ' + data.message);
+                    payBtn.innerHTML = '<span>Bayar Sekarang</span>';
+                    payBtn.classList.remove('opacity-80', 'pointer-events-none');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred during checkout');
+                payBtn.innerHTML = '<span>Bayar Sekarang</span>';
+                payBtn.classList.remove('opacity-80', 'pointer-events-none');
+            });
+        });
+    </script>
+</body>
+</html>

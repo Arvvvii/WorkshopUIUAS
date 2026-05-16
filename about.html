@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgMain">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="hover:text-primary transition-colors">Artikel</a>
+                    <a href="history-transaksi.html" class="hover:text-primary transition-colors">Orders</a>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center space-x-5">
+                    <!-- Cart Icon -->
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    
+                    <!-- Login Button -->
+                    <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
+                        Log In
+                    </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button class="md:hidden hover:text-primary focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Content -->
+    <main class="py-20">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center mb-16">
+                <h1 class="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl mb-6">About <span class="text-primary">BLINKCO</span></h1>
+                <p class="text-textMuted text-lg md:text-xl leading-relaxed">
+                    The premium destination for every BLINK. We are more than just a store; we are a universe dedicated to the BLACKPINK legacy.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
+                <div class="rounded-3xl overflow-hidden shadow-xl bg-gray-100 aspect-video flex items-center justify-center relative">
+                    <img src="https://placehold.co/800x450/f3f4f6/f72585?text=BLINKCO+Universe" alt="About" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-6">
+                    <h2 class="font-poppins font-bold text-3xl text-textMain">Our Mission</h2>
+                    <p class="text-textMuted leading-relaxed">
+                        At BLINKCO, our mission is simple: to provide fans with authentic, high-quality merchandise that celebrates the music and artistry of BLACKPINK. We understand the passion of the fandom, and we strive to create a shopping experience that is as iconic as the group itself.
+                    </p>
+                    <p class="text-textMuted leading-relaxed">
+                        From limited edition albums to exclusive fashion collections, every item in our catalog is curated with the utmost care. We bridge the gap between the artists and the fans, bringing the world of BLACKPINK closer to you.
+                    </p>
+                    <div class="pt-4">
+                        <a href="katalog.html" class="inline-flex items-center text-primary font-bold hover:gap-2 transition-all">
+                            Browse Collection <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-bgAlt rounded-[3rem] p-8 md:p-16 text-center shadow-sm border border-gray-100">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="font-poppins font-bold text-3xl mb-6 text-textMain">Join the Community</h2>
+                    <p class="text-textMuted mb-8 font-medium">
+                        Be the first to know about new arrivals, exclusive drops, and global events. Join thousands of BLINKs around the world who trust BLINKCO for their official merchandise.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="register.html" class="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:bg-[#e01970] transition-colors shadow-md">
+                            Join Now
+                        </a>
+                        <a href="arsip-artikel.html" class="bg-white text-textMain font-bold py-4 px-10 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                            Read News
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Clean Footer -->
+    <footer class="bg-darkFooter text-gray-300 py-12">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide text-white block mb-4">
+                        BLINK<span class="text-primary">CO</span>
+                    </a>
+                    <p class="text-sm text-gray-400">Your #1 Stop for Premium Merchandise.</p>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Shop</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="katalog.html" class="hover:text-primary transition-colors">All Products</a></li>
+                        <li><a href="katalog.html" class="hover:text-primary transition-colors">Apparel</a></li>
+                        <li><a href="katalog.html" class="hover:text-primary transition-colors">Music</a></li>
+                        <li><a href="katalog.html" class="hover:text-primary transition-colors">Accessories</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">FAQ</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Shipping Returns</a></li>
+                        <li><a href="contact.html" class="hover:text-primary transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-poppins font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+                <p>&copy; 2026 BLINKCO. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-white transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+</body>
+</html>

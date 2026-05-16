@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgMain min-h-screen flex">
+    <div class="w-full flex flex-col lg:flex-row">
+        
+        <!-- Left Container: Image -->
+        <div class="hidden lg:block lg:w-1/2 relative bg-gray-50 border-r border-gray-100">
+            <!-- Aesthetic Placehold Image with Light Gray BG -->
+            <img src="https://placehold.co/1080x1920/F9FAFB/9CA3AF?text=Join+The+Universe" alt="Register Banner" class="absolute inset-0 w-full h-full object-cover">
+        </div>
+        
+        <!-- Right Container: Form -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-16 overflow-y-auto">
+            <div class="w-full max-w-md py-8">
+                <!-- Brand -->
+                <a href="index.html" class="font-poppins font-bold text-3xl mb-10 inline-block">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <!-- Heading -->
+                <h1 class="font-poppins font-bold text-3xl mb-2 text-textMain">Create an account</h1>
+                <p class="text-textMuted mb-8 font-medium">Join the BLINK universe today.</p>
+                
+                <!-- Form -->
+                <form id="registerForm" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-textMain">Full Name</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-bgAlt text-textMain" placeholder="Andy">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-textMain">Email</label>
+                        <input type="email" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-bgAlt text-textMain" placeholder="andy@example.com">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-textMain">Password</label>
+                        <input type="password" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-bgAlt text-textMain" placeholder="Create a password">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm mt-6">
+                        Create Account
+                    </button>
+                </form>
+                
+                <!-- Footer link -->
+                <p class="mt-8 text-center text-sm font-medium text-textMuted">
+                    Already have an account? <a href="login.html" class="text-primary font-semibold hover:text-[#e01970] transition-colors">Log in</a>
+                </p>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple mock logic for registration
+            alert('Account created successfully! Please log in.');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

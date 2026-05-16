@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgMain min-h-screen flex">
+    <div class="w-full flex flex-col lg:flex-row">
+        
+        <!-- Left Container: Image -->
+        <div class="hidden lg:block lg:w-1/2 relative bg-gray-50 border-r border-gray-100">
+            <!-- Aesthetic Placehold Image with Light Gray BG -->
+            <img src="https://placehold.co/1080x1920/F3F4F6/9CA3AF?text=Aesthetic+Merch+Vibe" alt="Login Banner" class="absolute inset-0 w-full h-full object-cover">
+        </div>
+        
+        <!-- Right Container: Form -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-16">
+            <div class="w-full max-w-md">
+                <!-- Brand -->
+                <a href="index.html" class="font-poppins font-bold text-3xl mb-12 inline-block">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <!-- Heading -->
+                <h1 class="font-poppins font-bold text-3xl mb-2 text-textMain">Welcome Back</h1>
+                <p class="text-textMuted mb-8 font-medium">Please enter your details to sign in.</p>
+                
+                <!-- Form -->
+                <form id="loginForm" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-textMain">Email</label>
+                        <input type="email" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-bgAlt text-textMain" placeholder="andy@example.com">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-textMain">Password</label>
+                        <input type="password" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-bgAlt text-textMain" placeholder="••••••••">
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-2">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2">
+                            <span class="ml-2 text-sm text-textMuted font-medium">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm font-semibold text-primary hover:text-[#e01970] transition-colors">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm mt-4">
+                        Login
+                    </button>
+                </form>
+                
+                <div class=" mt-4 text-center text-xs text-textMuted font-medium bg-blue-50 text-blue-800 py-2 rounded-lg\>Demo - User: andy@blinkco.com | Admin: admin@blinkco.com</div><!-- Footer link -->
+                <p class="mt-8 text-center text-sm font-medium text-textMuted">
+                    Don't have an account? <a href="register.html" class="text-primary font-semibold hover:text-[#e01970] transition-colors">Sign up</a>
+                </p>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailInput = this.querySelector('input[type="email"]').value;
+            const passwordInput = this.querySelector('input[type="password"]').value;
+            
+            fetch('api/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: emailInput, password: passwordInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const currentUser = data.user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    localStorage.setItem('blinkco_user', JSON.stringify({ isLoggedIn: true, ...currentUser }));
+                    alert(data.message);
+                    if (currentUser.role === 'admin') {
+                        window.location.href = 'admin/dashboard.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during login.');
+            });
+        });
+    </script>
+</body>
+</html>

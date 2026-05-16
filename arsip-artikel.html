@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Articles | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="text-primary transition-colors">News</a>
+                </div>
+                
+                <div class="flex items-center space-x-5">
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    
+                    <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
+                        Log In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-white py-16 border-b border-gray-100 text-center">
+        <div class="container mx-auto px-4 lg:px-8">
+            <h1 class="font-poppins font-bold text-4xl lg:text-5xl text-textMain mb-4">Latest Updates</h1>
+            <p class="text-textMuted font-medium max-w-2xl mx-auto">Stay up to date with the newest releases, tour announcements, and exclusive interviews from the BLINK universe.</p>
+            
+            <div class="flex flex-wrap justify-center gap-3 mt-8">
+                <span class="bg-textMain text-white px-4 py-2 rounded-full text-xs font-semibold cursor-pointer">All News</span>
+                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Music</span>
+                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Fashion</span>
+                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Interviews</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Grid -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="col-span-full text-center text-textMuted py-12">Loading articles...</div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-16 flex justify-center">
+                <button class="bg-white border border-gray-200 text-textMain font-semibold py-3 px-8 rounded-xl hover:bg-gray-50 transition-colors shadow-sm">
+                    Load More Articles
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('api/get_articles.php')
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('article-grid');
+                    if (!data.success || data.data.length === 0) {
+                        grid.innerHTML = '<div class="col-span-full text-center text-textMuted py-12">No articles found.</div>';
+                        return;
+                    }
+                    grid.innerHTML = '';
+                    data.data.forEach(article => {
+                        const image = article.image_url || 'https://placehold.co/800x450/f3f4f6/f72585?text=News';
+                        const date = article.created_at
+                            ? new Date(article.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+                            : '';
+                        const excerpt = article.content ? article.content.substring(0, 150) + '...' : '';
+                        grid.insertAdjacentHTML('beforeend', `
+                        <a href="detail-artikel.html?id=${article.id}" class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col cursor-pointer">
+                            <div class="relative w-full aspect-video overflow-hidden bg-gray-50">
+                                <img src="${image}" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-primary/10 text-primary text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">${article.category || 'News'}</span>
+                                    <span class="text-xs text-textMuted font-medium">${date}</span>
+                                </div>
+                                <h3 class="font-poppins font-semibold text-textMain text-xl mb-3 group-hover:text-primary transition-colors">${article.title}</h3>
+                                <p class="text-sm text-textMuted font-medium line-clamp-3 mb-4">${excerpt}</p>
+                                <div class="mt-auto font-semibold text-primary text-sm flex items-center">
+                                    Read more <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </div>
+                            </div>
+                        </a>`);
+                    });
+                })
+                .catch(() => {
+                    document.getElementById('article-grid').innerHTML =
+                        '<div class="col-span-full text-center text-red-400 py-12">Gagal memuat artikel.</div>';
+                });
+        });
+    </script>
+
+    <!-- Clean Footer -->
+    <footer class="bg-darkFooter text-gray-300 py-12 mt-auto">
+        <div class="container mx-auto px-4 lg:px-8 text-center border-t border-gray-700 pt-8">
+            <p class="text-sm">&copy; 2026 BLINKCO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS References -->
+    <script src="js/script.js"></script>
+</body>
+</html>

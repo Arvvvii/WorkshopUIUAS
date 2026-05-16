@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="history-transaksi.html" class="text-primary transition-colors">Orders</a>
+                </div>
+                
+                <div class="flex items-center space-x-5">
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    
+                    <div class="hidden md:flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold font-poppins text-xs">
+                            <span id="user-initial">?</span>
+                        </div>
+                        <span id="user-name-display" class="text-sm font-semibold">Guest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8">
+                <h1 class="font-poppins font-bold text-3xl mb-2 text-textMain">Transaction History</h1>
+                <p class="text-textMuted font-medium">View and track all your past orders.</p>
+            </div>
+            
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+                <div id="history-container" class="divide-y divide-gray-100">
+                    <!-- Javascript injected rows here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function formatRupiah(n) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n);
+        }
+
+        function statusBadge(status) {
+            const map = {
+                paid:       'bg-green-100 text-green-700',
+                shipped:    'bg-blue-100 text-blue-700',
+                delivered:  'bg-purple-100 text-purple-700',
+                processing: 'bg-yellow-100 text-yellow-700',
+                pending:    'bg-gray-100 text-gray-600',
+                cancelled:  'bg-red-100 text-red-600',
+            };
+            const cls = map[status] || 'bg-gray-100 text-gray-600';
+            return `<span class="${cls} text-xs font-bold px-3 py-1 rounded-md tracking-wide uppercase">${status}</span>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('currentUser');
+            const container = document.getElementById('history-container');
+
+            // Update navbar greeting
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    document.getElementById('user-initial').textContent = (user.name || 'U').charAt(0).toUpperCase();
+                    document.getElementById('user-name-display').textContent = user.name || 'User';
+                } catch(e) {}
+            }
+
+            if (!userStr) {
+                container.innerHTML = `
+                    <div class="p-16 text-center">
+                        <h3 class="font-poppins font-semibold text-xl mb-2 text-textMain">Silakan Login</h3>
+                        <p class="text-textMuted mb-6 font-medium">Anda perlu login untuk melihat riwayat transaksi.</p>
+                        <a href="login.html" class="inline-block bg-primary text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-[#e01970] transition-colors">Log In</a>
+                    </div>`;
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            container.innerHTML = `<div class="p-8 text-center text-textMuted">Loading orders...</div>`;
+
+            fetch(`api/get_orders.php?user_id=${user.id}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.success || data.data.length === 0) {
+                        container.innerHTML = `
+                            <div class="p-16 text-center">
+                                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                                </div>
+                                <h3 class="font-poppins font-semibold text-xl mb-2 text-textMain">No Transactions Yet</h3>
+                                <p class="text-textMuted mb-6 font-medium">You haven't made any purchases.</p>
+                                <a href="katalog.html" class="inline-block border border-gray-200 text-textMain font-semibold py-2.5 px-6 rounded-lg hover:bg-gray-50 transition-colors">Browse Products</a>
+                            </div>`;
+                        return;
+                    }
+
+                    container.innerHTML = data.data.map(order => {
+                        const date = new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                        const items = order.items_summary || `${order.item_count} item(s)`;
+                        return `
+                        <div class="p-6 hover:bg-gray-50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-5">
+                                <div class="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary flex-shrink-0">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-poppins font-semibold text-lg text-textMain mb-1">Order #${order.id}</h3>
+                                    <p class="text-xs text-textMuted font-medium mb-1">${date}</p>
+                                    <p class="text-xs text-textMuted truncate max-w-xs">${items}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center mt-4 md:mt-0 pt-4 md:pt-0 border-t border-gray-100 md:border-t-0 gap-3">
+                                <p class="font-bold text-textMain text-lg">${formatRupiah(order.total_price)}</p>
+                                ${statusBadge(order.status)}
+                            </div>
+                        </div>`;
+                    }).join('');
+                })
+                .catch(() => {
+                    container.innerHTML = `<div class="p-8 text-center text-red-400">Gagal memuat riwayat pesanan.</div>`;
+                });
+        });
+    </script>
+</body>
+</html>

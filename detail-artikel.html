@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="text-primary transition-colors">News</a>
+                </div>
+                
+                <div class="flex items-center space-x-5">
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Content Container -->
+    <article class="pt-12 pb-24">
+        <!-- High-readability Max-width Header -->
+        <header class="max-w-3xl mx-auto px-4 lg:px-0 mb-10">
+            <div class="flex items-center gap-3 mb-6">
+                <span id="article-category" class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wider">Music</span>
+                <span id="article-date" class="text-sm text-textMuted font-medium">Published on May 14, 2026</span>
+            </div>
+            
+            <h1 id="article-title" class="font-poppins font-bold text-4xl lg:text-5xl leading-tight mb-6 text-textMain">
+                BLACKPINK Announces Global World Tour Extensions for Late 2026
+            </h1>
+            
+            <p id="article-excerpt" class="text-xl text-textMuted font-medium leading-relaxed mb-8">
+                Following the massive success of their recent stadium shows, the group has officially confirmed 15 additional dates across North America and Europe.
+            </p>
+            
+            <div class="flex items-center gap-4 pt-6 border-t border-gray-200">
+                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-textMuted font-bold">
+                    ED
+                </div>
+                <div>
+                    <h4 class="font-poppins font-semibold text-sm">By BLINKCO Editorial</h4>
+                    <p class="text-xs text-textMuted font-medium">3 Min Read</p>
+                </div>
+                
+                <!-- Share Buttons -->
+                <div class="ml-auto flex gap-2">
+                    <button class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </button>
+                    <button class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-textMuted hover:text-primary hover:border-primary transition-colors shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Image -->
+        <div class="max-w-5xl mx-auto px-4 lg:px-8 mb-12">
+            <div class="w-full aspect-video rounded-3xl overflow-hidden shadow-soft bg-white border border-gray-100">
+                <img id="article-image" src="https://placehold.co/1200x675/f3f4f6/f72585?text=Tour+Extensions" alt="Tour Featured" class="w-full h-full object-cover">
+            </div>
+            <p id="article-caption" class="text-center text-xs text-textMuted mt-3 font-medium"></p>
+        </div>
+
+        <!-- High-readability Max-width Body -->
+        <div id="article-content" class="max-w-3xl mx-auto px-4 lg:px-0 prose prose-lg prose-p:font-medium prose-p:text-gray-600 prose-headings:font-poppins prose-headings:text-textMain prose-a:text-primary">
+            
+            <p>
+                In an unexpected but highly anticipated announcement, BLACKPINK's management has confirmed that the group will be extending their record-breaking world tour through the end of 2026. The new leg of the tour promises to bring an upgraded setlist and stage design that fans have never seen before.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-4">A Monumental Year for the Group</h2>
+            
+            <p>
+                The past year has been nothing short of phenomenal for the quartet. With the release of their critically acclaimed album and their subsequent stadium tours selling out in minutes, the demand from international fans has skyrocketed. Addressing this, the group decided to add 15 more cities to their schedule.
+            </p>
+
+            <blockquote class="border-l-4 border-primary pl-4 my-8 italic font-semibold text-textMain bg-white p-6 rounded-r-xl shadow-sm">
+                "We wanted to make sure we reached as many BLINKs as possible. Your energy during the last leg was incredible, and we can't wait to share these new stages with you."
+            </blockquote>
+
+            <p>
+                The new dates include stops in cities they haven't visited in over four years, alongside encore performances in major metropolitan hubs like New York, London, and Paris. According to insiders, the production team has been working tirelessly to revamp the concert experience, incorporating state-of-the-art visual mapping and interactive fan segments.
+            </p>
+
+            <h2 class="text-2xl font-bold mt-8 mb-4">Ticketing Details</h2>
+            
+            <p>
+                Official BLINK fanclub members will have priority access during the early pre-sale period starting next Monday. General public sales will open later in the week. Given the unprecedented demand, fans are advised to ensure their memberships are up-to-date and to register on the official ticketing platform beforehand.
+            </p>
+
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-6 my-8 flex items-start gap-4">
+                <div class="text-blue-500 mt-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div>
+                    <h4 class="font-poppins font-semibold text-blue-900 mb-1">Quick Tip</h4>
+                    <p class="text-sm text-blue-800 font-medium m-0">Ensure you are logged into your BLINKCO account and have linked your membership ID before the pre-sale begins to avoid any delays at checkout.</p>
+                </div>
+            </div>
+
+            <p>
+                Stay tuned to the BLINKCO news portal for the official list of cities and exact ticketing schedules. Let's make this extended tour the most unforgettable experience yet!
+            </p>
+        </div>
+        
+        <!-- Tags & Navigation -->
+        <div class="max-w-3xl mx-auto px-4 lg:px-0 mt-12 pt-8 border-t border-gray-200">
+            <div class="flex flex-wrap gap-2 mb-8">
+                <span class="bg-white border border-gray-200 text-textMuted px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wide hover:border-primary cursor-pointer transition-colors">Tour</span>
+                <span class="bg-white border border-gray-200 text-textMuted px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wide hover:border-primary cursor-pointer transition-colors">Announcement</span>
+                <span class="bg-white border border-gray-200 text-textMuted px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wide hover:border-primary cursor-pointer transition-colors">Global</span>
+            </div>
+            
+            <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <a href="#" class="group text-left w-1/2 pr-4 border-r border-gray-100">
+                    <span class="text-xs text-textMuted font-bold uppercase tracking-wider block mb-1">Previous</span>
+                    <span class="font-poppins font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">The Best Looks from Paris Fashion Week Front Row</span>
+                </a>
+                <a href="#" class="group text-right w-1/2 pl-4">
+                    <span class="text-xs text-textMuted font-bold uppercase tracking-wider block mb-1">Next</span>
+                    <span class="font-poppins font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">Behind The Scenes of the Latest Album</span>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <!-- Clean Footer -->
+    <footer class="bg-darkFooter text-gray-300 py-12 mt-auto">
+        <div class="container mx-auto px-4 lg:px-8 text-center border-t border-gray-700 pt-8">
+            <p class="text-sm">&copy; 2026 BLINKCO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS References -->
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+
+            if (!articleId) {
+                window.location.href = 'arsip-artikel.html';
+                return;
+            }
+
+            fetch(`api/get_articles.php`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const article = data.data.find(a => a.id == articleId);
+                        if (!article) {
+                            alert('Artikel tidak ditemukan.');
+                            window.location.href = 'arsip-artikel.html';
+                            return;
+                        }
+
+                        // Update Page Title
+                        document.title = `${article.title} | BLINKCO`;
+
+                        // Update Header
+                        document.getElementById('article-category').textContent = article.category || 'News';
+                        document.getElementById('article-date').textContent = `Published on ${new Date(article.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+                        document.getElementById('article-title').textContent = article.title;
+                        document.getElementById('article-excerpt').textContent = article.content.substring(0, 150) + '...';
+
+                        // Update Image
+                        const img = document.getElementById('article-image');
+                        img.src = article.image_url || 'https://placehold.co/1200x675/f3f4f6/f72585?text=News';
+                        img.alt = article.title;
+
+                        // Update Content
+                        document.getElementById('article-content').innerHTML = article.content.split('\n').map(p => `<p class="mb-4">${p}</p>`).join('');
+
+                        // Update Caption
+                        document.getElementById('article-caption').textContent = article.title;
+                    }
+                })
+                .catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>
