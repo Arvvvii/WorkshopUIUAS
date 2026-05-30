@@ -56,17 +56,55 @@
 </head>
 <body class="font-montserrat text-textMain bg-bgMain relative">
 
-    <!-- Sticky Navbar -->
+        <!-- Sticky Navbar -->
     <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
                 <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
                     BLINK<span class="text-primary">CO</span>
                 </a>
+                
+                <!-- Desktop Links -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
-                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors">Orders</a>
                 </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center space-x-5">
+                    <!-- Cart Icon -->
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                    
+                    <!-- Login Button -->
+                    <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
+                        Log In
+                    </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-toggle" class="md:hidden hover:text-primary focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
+                <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
+                <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">About</a>
+                <a href="contact.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Contact</a>
+                <a href="history-transaksi.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Orders</a>
+                <a href="login.html" class="mobile-nav-link block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-textMain text-white hover:bg-gray-800">Log In</a>
             </div>
         </div>
     </nav>
@@ -132,6 +170,16 @@
                     <div class="space-y-3 mb-6 pb-6 border-b border-gray-200 text-sm font-medium text-textMuted" id="checkout-items">
                         <!-- JS injected item list -->
                     </div>
+                    
+                    <div class="mb-6 pb-6 border-b border-gray-200">
+                        <label class="block text-sm font-semibold text-textMain mb-2">Coupon Code</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="coupon-input" placeholder="e.g. BLINKFREESHIP" class="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                            <button type="button" id="apply-coupon-btn" class="bg-textMain text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors">Apply</button>
+                        </div>
+                        <div id="coupon-message" class="text-xs font-medium mt-2 hidden"></div>
+                    </div>
+
                     <div class="flex justify-between font-semibold text-xl text-textMain">
                         <span>Total</span>
                         <span id="checkout-total">Rp 0</span>
@@ -154,7 +202,7 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.3"></script>
     <script>
         function formatRupiah(number) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
@@ -171,6 +219,7 @@
         let cartTotal = 0;
         let cartItemsData = [];
         let itemsForApi = [];
+        let finalTotal = 0;
         
         if (cartStr) {
             const cart = JSON.parse(cartStr);
@@ -204,15 +253,71 @@
             let html = '';
             itemsForApi.forEach(i => {
                 const name = i.name || 'Product';
+                let displayName = name;
+                let variantText = '';
+                
+                if (name.includes(' - ')) {
+                    const parts = name.split(' - ');
+                    displayName = parts[0];
+                    variantText = `<span class="text-xs text-textMuted block mt-0.5">Varian: ${parts.slice(1).join(' - ')}</span>`;
+                }
+                
                 html += `
-                    <div class="flex justify-between">
-                        <span>${i.qty}x ${name}</span>
-                        <span class="text-textMain">${formatRupiah(i.price * i.qty)}</span>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span>${i.qty}x ${displayName}</span>
+                            ${variantText}
+                        </div>
+                        <span class="text-textMain font-semibold">${formatRupiah(i.price * i.qty)}</span>
                     </div>
                 `;
             });
+            // Shipping row placeholder (will be replaced by coupon if free shipping)
+            html += `
+                <div class="flex justify-between" id="shipping-row">
+                    <span>Shipping</span>
+                    <span class="text-textMain">Rp 25.000</span>
+                </div>
+            `;
+            // For this example, let's assume default shipping is 25000
+            let shippingFee = 25000;
+            finalTotal = cartTotal + shippingFee;
+
             document.getElementById('checkout-items').innerHTML = html;
-            document.getElementById('checkout-total').textContent = formatRupiah(cartTotal);
+            document.getElementById('checkout-total').textContent = formatRupiah(finalTotal);
+
+            // Coupon Logic
+            const applyBtn = document.getElementById('apply-coupon-btn');
+            const couponInput = document.getElementById('coupon-input');
+            const couponMsg = document.getElementById('coupon-message');
+            let couponApplied = false;
+
+            applyBtn.addEventListener('click', () => {
+                const code = couponInput.value.trim().toUpperCase();
+                if (code === 'BLINKFREESHIP') {
+                    if (!couponApplied) {
+                        couponApplied = true;
+                        shippingFee = 0;
+                        finalTotal = cartTotal + shippingFee;
+                        
+                        document.getElementById('shipping-row').innerHTML = `
+                            <span>Shipping <span class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded ml-2 uppercase">BLINKFREESHIP</span></span>
+                            <span class="text-green-500 font-semibold">Free</span>
+                        `;
+                        document.getElementById('checkout-total').textContent = formatRupiah(finalTotal);
+                        couponMsg.textContent = 'Coupon applied successfully!';
+                        couponMsg.className = 'text-xs font-medium mt-2 text-green-500';
+                        couponMsg.classList.remove('hidden');
+                        showSuccessToast('Coupon Applied', 'Free shipping applied to your order.');
+                    }
+                } else {
+                    couponMsg.textContent = 'Invalid coupon code.';
+                    couponMsg.className = 'text-xs font-medium mt-2 text-red-500';
+                    couponMsg.classList.remove('hidden');
+                    showErrorToast('Invalid Coupon', 'The code you entered is not valid.');
+                }
+            });
+
         } else {
             // Prevent checkout if cart empty
             window.location.href = 'index.html';
@@ -238,7 +343,7 @@
             const checkoutData = {
                 user_id: currentUser.id || null, 
                 shipping_address: shippingStr,
-                total_amount: cartTotal,
+                total_amount: finalTotal,
                 items: itemsForApi
             };
 
@@ -254,8 +359,7 @@
                     localStorage.removeItem('blinkco_cart');
                     if(typeof updateCartBadge === 'function') updateCartBadge();
                     
-                    // 2. Show Simulated Midtrans Modal & Alert
-                    alert("Pembayaran Berhasil!");
+                    // 2. Show Simulated Midtrans Modal
                     const modal = document.getElementById('successModal');
                     const content = document.getElementById('modalContent');
                     modal.classList.remove('hidden');
@@ -266,14 +370,14 @@
                         window.location.href = 'history-transaksi.html';
                     }, 2500);
                 } else {
-                    alert('Checkout failed: ' + data.message);
+                    showErrorToast('Gagal', 'Checkout failed: ' + data.message);
                     payBtn.innerHTML = '<span>Bayar Sekarang</span>';
                     payBtn.classList.remove('opacity-80', 'pointer-events-none');
                 }
             })
             .catch(err => {
                 console.error(err);
-                alert('An error occurred during checkout');
+                showErrorToast('Error', 'An error occurred during checkout');
                 payBtn.innerHTML = '<span>Bayar Sekarang</span>';
                 payBtn.classList.remove('opacity-80', 'pointer-events-none');
             });

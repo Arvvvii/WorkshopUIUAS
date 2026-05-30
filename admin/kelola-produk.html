@@ -137,33 +137,69 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <form id="addProductForm" class="p-6">
+            <form id="addProductForm" class="p-6" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="editId">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1 text-textMain">Nama Produk</label>
-                        <input type="text" name="name" id="editName" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="h-[60vh] overflow-y-auto pr-2 space-y-6">
+                    
+                    <!-- Basic Info -->
+                    <div class="space-y-4">
+                        <h4 class="font-poppins font-bold text-md text-textMain border-b pb-2">1. Basic Info</h4>
                         <div>
-                            <label class="block text-sm font-semibold mb-1 text-textMain">Kategori</label>
-                            <select name="category" id="editCategory" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
-                                <option>Accessories</option>
-                                <option>Apparel</option>
-                                <option>Music</option>
-                            </select>
+                            <label class="block text-sm font-semibold mb-1 text-textMain">Nama Produk</label>
+                            <input type="text" name="name" id="editName" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1 text-textMain">Kategori</label>
+                                <select name="category" id="editCategory" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                                    <option>Accessories</option>
+                                    <option>Apparel</option>
+                                    <option>Music</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1 text-textMain">Harga Dasar (Rp)</label>
+                                <input type="number" name="price" id="editPrice" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1 text-textMain">Stok Dasar</label>
+                                <input type="number" name="stock" id="editStock" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1 text-textMain">Berat (gram)</label>
+                                <input type="number" name="weight" id="editWeight" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="space-y-4">
+                        <h4 class="font-poppins font-bold text-md text-textMain border-b pb-2">2. Product Images</h4>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-textMain">Main Image (Primary)</label>
+                            <input type="file" name="main_image" accept="image/*" class="w-full text-sm text-textMuted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-1 text-textMain">Stok</label>
-                            <input type="number" name="stock" id="editStock" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                            <label class="block text-sm font-semibold mb-1 text-textMain">Gallery Images (Multiple)</label>
+                            <input type="file" name="gallery_images[]" accept="image/*" multiple class="w-full text-sm text-textMuted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-textMain hover:file:bg-gray-200">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1 text-textMain">Harga (Rp)</label>
-                        <input type="number" name="price" id="editPrice" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+
+                    <!-- Variants -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h4 class="font-poppins font-bold text-md text-textMain">3. Variants (Optional)</h4>
+                            <button type="button" onclick="addVariantRow()" class="text-xs bg-gray-100 px-3 py-1.5 rounded-lg font-semibold hover:bg-gray-200">+ Add Variant</button>
+                        </div>
+                        <div id="variantsContainer" class="space-y-3">
+                            <!-- JS injected rows -->
+                        </div>
                     </div>
                 </div>
-                <div class="mt-8 flex justify-end gap-3">
+
+                <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end gap-3">
                     <button type="button" onclick="closeModal()" class="px-5 py-2.5 border border-gray-200 rounded-xl font-semibold text-textMuted hover:bg-gray-50 transition-colors">Batal</button>
                     <button type="submit" id="btnSubmit" class="px-5 py-2.5 bg-primary text-white rounded-xl font-semibold hover:bg-[#e01970] transition-colors shadow-sm">Simpan Produk</button>
                 </div>
@@ -173,26 +209,86 @@
 
     <script>
         let allProducts = [];
+        let variantCount = 0;
+
+        function getImageUrl(url) {
+            if (!url) return 'https://placehold.co/100x100/f3f4f6/9ca3af';
+            if (url.startsWith('http') || url.startsWith('/') || url.startsWith('data:')) {
+                return url;
+            }
+            return '../' + url;
+        }
+
+        function addVariantRow(name = '', stock = '', price = 0, imageUrl = '') {
+            const container = document.getElementById('variantsContainer');
+            const row = document.createElement('div');
+            row.className = 'grid grid-cols-12 gap-2 items-center p-3 bg-gray-50 rounded-xl border border-gray-100';
+            row.id = 'var-row-' + variantCount;
+            row.innerHTML = `
+                <div class="col-span-3">
+                    <input type="text" name="var_name[]" value="${name}" placeholder="Variant Name" required class="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs">
+                </div>
+                <div class="col-span-3">
+                    <input type="number" name="var_stock[]" value="${stock}" placeholder="Stock" required class="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs">
+                </div>
+                <div class="col-span-2">
+                    <input type="number" name="var_price[]" value="${price}" placeholder="Add-on Price (Rp)" class="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs">
+                </div>
+                <div class="col-span-3 flex items-center gap-1.5">
+                    <input type="hidden" name="var_existing_image[]" value="${imageUrl}">
+                    ${imageUrl ? `<img src="${getImageUrl(imageUrl)}" class="w-6 h-6 rounded object-cover border border-gray-200 flex-shrink-0">` : ''}
+                    <input type="file" name="var_image_${variantCount}" accept="image/*" class="w-full text-[10px] file:py-1 file:px-2 file:rounded file:border-0 file:bg-gray-200">
+                </div>
+                <div class="col-span-1 text-right">
+                    <button type="button" onclick="document.getElementById('var-row-${variantCount}').remove()" class="text-red-500 hover:text-red-700">
+                        <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </div>
+            `;
+            container.appendChild(row);
+            variantCount++;
+        }
 
         function closeModal() {
             document.getElementById('modalProduk').classList.add('hidden');
             document.getElementById('addProductForm').reset();
             document.getElementById('editId').value = '';
+            document.getElementById('variantsContainer').innerHTML = ''; // Clear variants
             document.getElementById('btnSubmit').textContent = 'Simpan Produk';
         }
 
         function openEditModal(id) {
-            const product = allProducts.find(p => p.id == id);
-            if (!product) return;
+            fetch(`../api/get_product_detail.php?id=${id}`)
+                .then(res => res.json())
+                .then(resData => {
+                    if (resData.success) {
+                        const product = resData.data;
+                        document.getElementById('editId').value = product.id;
+                        document.getElementById('editName').value = product.name;
+                        document.getElementById('editCategory').value = product.category_name || product.category;
+                        document.getElementById('editStock').value = product.stock;
+                        document.getElementById('editPrice').value = product.price;
+                        document.getElementById('editWeight').value = product.weight || 0;
 
-            document.getElementById('editId').value = product.id;
-            document.getElementById('editName').value = product.name;
-            document.getElementById('editCategory').value = product.category_name || product.category;
-            document.getElementById('editStock').value = product.stock;
-            document.getElementById('editPrice').value = product.price;
+                        // Populating existing variants
+                        const varContainer = document.getElementById('variantsContainer');
+                        varContainer.innerHTML = '';
+                        if (product.variants && product.variants.length > 0) {
+                            product.variants.forEach(variant => {
+                                addVariantRow(variant.variant_name, variant.stock, variant.additional_price, variant.image_url);
+                            });
+                        }
 
-            document.getElementById('btnSubmit').textContent = 'Update Produk';
-            document.getElementById('modalProduk').classList.remove('hidden');
+                        document.getElementById('btnSubmit').textContent = 'Update Produk';
+                        document.getElementById('modalProduk').classList.remove('hidden');
+                    } else {
+                        alert('Gagal mengambil data produk: ' + resData.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Terjadi kesalahan koneksi.');
+                });
         }
 
         function fetchAdminProducts() {
@@ -208,7 +304,7 @@
                             return;
                         }
                         data.data.forEach(product => {
-                            const image = product.image_url || product.image || 'https://placehold.co/100x100/f3f4f6/9ca3af';
+                            const image = getImageUrl(product.image_url || product.image);
                             const priceStr = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.price).replace(/,00$/, '');
                             const row = `
                             <tr class="hover:bg-gray-50 transition-colors" id="prod-row-${product.id}">
@@ -250,21 +346,23 @@
         document.getElementById('addProductForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
 
-            const isEdit = data.id !== '';
+            const isEdit = formData.get('id') !== '';
             const apiUrl = isEdit ? '../api/update_product.php' : '../api/add_product.php';
+            
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
 
             fetch(apiUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: formData
             })
             .then(res => res.json())
             .then(resData => {
+                btn.textContent = originalText;
+                btn.disabled = false;
                 if(resData.success) {
                     alert(isEdit ? 'Product updated successfully!' : 'Product added successfully!');
                     closeModal();
@@ -273,7 +371,11 @@
                     alert('Error: ' + resData.message);
                 }
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+                console.error(err);
+            });
         });
 
         function deleteProduct(id) {

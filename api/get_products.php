@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 try {
-    $query = "SELECT p.*, c.name as category_name 
+    $query = "SELECT p.*, c.name as category_name,
+              (SELECT COUNT(*) FROM product_variants WHERE product_id = p.id) as variant_count
               FROM products p 
               LEFT JOIN categories c ON p.category_id = c.id 
               ORDER BY p.id DESC";

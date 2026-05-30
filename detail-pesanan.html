@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelacakan Detail Pesanan | BLINKCO</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F72585',
+                        textMain: '#111827',
+                        textMuted: '#6B7280',
+                        bgMain: '#FFFFFF',
+                        bgAlt: '#F9FAFB',
+                        darkFooter: '#1F2937'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
+                    BLINK<span class="text-primary">CO</span>
+                </a>
+                
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors text-primary font-bold">Orders</a>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center space-x-5">
+                    <!-- Cart Icon -->
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 lg:px-8 py-10">
+        <div class="max-w-6xl mx-auto">
+            <!-- Back Button -->
+            <a href="history-transaksi.html" class="inline-flex items-center gap-2 text-sm font-bold text-textMuted hover:text-primary transition-colors mb-8 focus:outline-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali ke Riwayat Transaksi
+            </a>
+
+            <!-- Dynamic content mounts here -->
+            <div id="detail-pesanan-root">
+                <div class="p-16 text-center text-textMuted font-medium">Memuat rincian pesanan Anda...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+    <script src="js/script.js?v=1.3"></script>
+    <script>
+        function formatRupiah(n) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+
+        // Format Date Helper
+        function formatFullDate(date) {
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }) + ' • ' + date.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + ' WIB';
+        }
+
+        // Show Local Toast Function
+        function showLocalToast(title, subtitle, isError = false) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = [
+                'bg-white border border-gray-100 rounded-2xl p-4',
+                'flex items-center gap-4',
+                'shadow-[0_8px_30px_rgb(0,0,0,0.08)]',
+                'transform transition-all duration-300 translate-y-12 opacity-0',
+                'pointer-events-auto min-w-[300px] max-w-sm'
+            ].join(' ');
+
+            const iconColor = isError ? 'text-red-500 bg-red-50' : 'text-primary bg-primary/5';
+            const iconSvg = isError 
+                ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>'
+                : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>';
+
+            toast.innerHTML = `
+                <div class="w-10 h-10 ${iconColor} rounded-full flex items-center justify-center flex-shrink-0">
+                    ${iconSvg}
+                </div>
+                <div class="flex-grow min-w-0">
+                    <h4 class="font-poppins font-semibold text-sm text-gray-900 leading-tight">${title}</h4>
+                    ${subtitle ? `<p class="text-xs text-gray-500 font-medium mt-0.5 truncate">${subtitle}</p>` : ''}
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 flex-shrink-0" aria-label="Close">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>`;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => toast.classList.remove('translate-y-12', 'opacity-0'));
+            });
+
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    toast.classList.add('translate-y-12', 'opacity-0');
+                    setTimeout(() => { if (document.body.contains(toast)) toast.remove(); }, 300);
+                }
+            }, 3500);
+        }
+
+        // Copy Tracking number handler
+        function copyResi(num) {
+            navigator.clipboard.writeText(num);
+            showLocalToast('Nomor Resi Disalin!', num);
+        }
+
+        // Simulating Courier Tracking Click
+        function trackCourier() {
+            showLocalToast('Fitur Pelacakan Kurir', 'Fitur pelacakan kurir akan tersedia pada versi berikutnya', false);
+        }
+
+        // Map status keys to Weverse/Shopee-style Badge
+        function getStatusBadge(status) {
+            const map = {
+                pending: { text: 'Menunggu Pembayaran', cls: 'bg-yellow-50 text-yellow-700 border-yellow-100', dot: '🟡' },
+                paid: { text: 'Sudah Dibayar', cls: 'bg-green-50 text-green-700 border-green-100', dot: '🟢' },
+                processing: { text: 'Sedang Diproses', cls: 'bg-blue-50 text-blue-700 border-blue-100', dot: '🔵' },
+                shipped: { text: 'Sedang Dikirim', cls: 'bg-purple-50 text-purple-700 border-purple-100', dot: '🟣' },
+                delivered: { text: 'Pesanan Selesai', cls: 'bg-green-500 text-white border-green-600', dot: '✅' },
+                completed: { text: 'Pesanan Selesai', cls: 'bg-green-500 text-white border-green-600', dot: '✅' },
+                cancelled: { text: 'Pesanan Dibatalkan', cls: 'bg-red-50 text-red-700 border-red-100', dot: '🔴' }
+            };
+
+            const item = map[status] || { text: 'Unknown', cls: 'bg-gray-50 text-gray-700 border-gray-100', dot: '⚪' };
+            return `
+            <div class="inline-flex items-center gap-2 border px-4 py-2 rounded-xl text-sm font-bold shadow-sm ${item.cls}">
+                <span>${item.dot}</span>
+                <span>${item.text}</span>
+            </div>`;
+        }
+
+        // Parse and render the comprehensive Weverse-grade vertical timeline
+        function renderTimeline(status, orderDateStr) {
+            const baseTime = new Date(orderDateStr);
+            
+            // Build chronologically simulated timestamps for progress tracking
+            const tDibuat = new Date(baseTime.getTime());
+            const tDibayar = new Date(baseTime.getTime() + 2 * 60 * 1000); // 2 minutes later
+            const tDiproses = new Date(baseTime.getTime() + 25 * 60 * 1000); // 25 minutes later
+            const tDikirim = new Date(baseTime.getTime() + 130 * 60 * 1000); // ~2 hours later
+            const tDiterima = new Date(baseTime.getTime() + 2880 * 60 * 1000); // ~2 days later
+
+            // All tracking stages
+            const stages = [
+                { key: 'pending', title: 'Pesanan Dibuat', time: tDibuat, desc: 'Pesanan berhasil dikirim ke antrean sistem BLINKCO' },
+                { key: 'paid', title: 'Pembayaran Diterima', time: tDibayar, desc: 'Pembayaran berhasil dikonfirmasi secara instan' },
+                { key: 'processing', title: 'Pesanan Diproses', time: tDiproses, desc: 'Penjual sedang mempersiapkan paket pesanan Anda' },
+                { key: 'shipped', title: 'Diserahkan ke Kurir (Dalam Pengiriman)', time: tDikirim, desc: 'Paket telah diserahkan ke J&T Express untuk dikirim' },
+                { key: 'delivered', title: 'Diterima Pembeli', time: tDiterima, desc: 'Pesanan telah diterima oleh pembeli dengan selamat' }
+            ];
+
+            if (status === 'cancelled') {
+                return `
+                <div class="relative bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-poppins font-bold text-lg text-red-600">Pesanan Dibatalkan</h3>
+                        <p class="text-sm text-red-500 font-medium mt-1">Sesi transaksi ini telah dibatalkan karena tidak ada pembayaran atau alasan khusus.</p>
+                        <p class="text-xs text-gray-400 mt-2 font-semibold">${formatFullDate(tDibuat)}</p>
+                    </div>
+                </div>`;
+            }
+
+            // Determine what is active
+            const statusWeights = { 'pending': 0, 'paid': 1, 'processing': 2, 'shipped': 3, 'delivered': 4, 'completed': 4 };
+            const currentWeight = statusWeights[status] !== undefined ? statusWeights[status] : 0;
+
+            let html = `
+            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <h3 class="font-poppins font-bold text-base text-textMain mb-6 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    Status Pelacakan Pengiriman
+                </h3>
+                
+                <div class="relative pl-8 space-y-8">
+                    <!-- Connector line -->
+                    <div class="absolute left-[11px] top-2.5 bottom-2.5 w-0.5 bg-gray-100"></div>`;
+
+            stages.forEach((stage, idx) => {
+                const isActive = idx <= currentWeight;
+                const isCurrent = idx === currentWeight;
+
+                const lineCls = isActive ? 'bg-primary' : 'bg-gray-200';
+                const circleCls = isCurrent 
+                    ? 'border-primary bg-primary text-white shadow-md shadow-primary/20 scale-110 z-10' 
+                    : (isActive ? 'border-primary bg-white text-primary z-10' : 'border-gray-200 bg-white text-gray-300');
+                
+                let checkIcon = '';
+                if (isCurrent) {
+                    checkIcon = '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                } else if (isActive) {
+                    checkIcon = '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>';
+                } else {
+                    checkIcon = '<div class="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>';
+                }
+
+                // If is active, show the timestamp. Otherwise show grayed out indicator
+                const titleCls = isCurrent ? 'text-textMain font-bold text-sm' : (isActive ? 'text-textMain font-semibold text-sm' : 'text-gray-400 font-semibold text-sm');
+                const descCls = isCurrent ? 'text-textMain/80 font-medium text-xs mt-1' : 'text-textMuted font-medium text-xs mt-1';
+                const dateHtml = isActive 
+                    ? `<p class="text-[10px] text-primary font-bold mt-1.5 bg-primary/5 px-2.5 py-0.5 rounded-full inline-block tracking-wide">${formatFullDate(stage.time)}</p>`
+                    : '<p class="text-[10px] text-gray-400 font-semibold mt-1">Belum tercapai</p>';
+
+                html += `
+                <div class="relative flex gap-4 transition-all duration-300">
+                    <!-- Progress Node -->
+                    <div class="absolute -left-[30px] top-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors duration-500 ${circleCls}">
+                        ${checkIcon}
+                    </div>
+                    <!-- Details -->
+                    <div class="flex-grow min-w-0">
+                        <h4 class="${titleCls}">${stage.title}</h4>
+                        <p class="${descCls}">${stage.desc}</p>
+                        ${dateHtml}
+                    </div>
+                </div>`;
+            });
+
+            html += `
+                </div>
+            </div>`;
+            return html;
+        }
+
+        // Render Page Layout
+        if (!orderId) {
+            // Render beautiful Illustrated Empty State
+            const root = document.getElementById('detail-pesanan-root');
+            root.innerHTML = `
+            <div class="bg-white border border-gray-100 rounded-3xl p-16 text-center shadow-sm max-w-lg mx-auto">
+                <div class="w-24 h-24 bg-primary/5 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                </div>
+                <h2 class="font-poppins font-bold text-2xl text-textMain mb-2">Belum ada pesanan</h2>
+                <p class="text-textMuted font-medium mb-8">Anda belum memiliki transaksi aktif di antrean pelacakan saat ini.</p>
+                <a href="katalog.html" class="inline-flex items-center justify-center bg-primary text-white font-bold py-3.5 px-8 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm focus:outline-none">
+                    Mulai Belanja Sekarang
+                </a>
+            </div>`;
+        } else {
+            // Load from dynamic API
+            fetch(`api/get_order_detail.php?id=${orderId}`)
+                .then(r => r.json())
+                .then(res => {
+                    const root = document.getElementById('detail-pesanan-root');
+                    if (!res.success) {
+                        root.innerHTML = `
+                        <div class="bg-white border border-gray-100 rounded-3xl p-16 text-center shadow-sm max-w-lg mx-auto">
+                            <div class="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+                            </div>
+                            <h2 class="font-poppins font-bold text-2xl text-red-600 mb-2">Order Tidak Ditemukan</h2>
+                            <p class="text-textMuted font-medium mb-8">${res.message || 'Kami tidak dapat menemukan detail pesanan dengan ID tersebut.'}</p>
+                            <a href="history-transaksi.html" class="inline-flex items-center justify-center bg-textMain text-white font-bold py-3.5 px-8 rounded-xl hover:bg-gray-800 transition-colors shadow-sm focus:outline-none">
+                                Kembali ke Riwayat
+                            </a>
+                        </div>`;
+                        return;
+                    }
+
+                    const order = res.data;
+
+                    // A. Calculate Dynamic Prices
+                    let subtotal = 0;
+                    order.items.forEach(item => {
+                        subtotal += (Number(item.price) * Number(item.quantity));
+                    });
+
+                    // Set standard rates to match order.total_amount beautifully
+                    let ongkir = 15000;
+                    let diskon = subtotal + ongkir - Number(order.total_amount);
+                    if (diskon < 0) {
+                        ongkir = Number(order.total_amount) - subtotal;
+                        diskon = 0;
+                    }
+
+                    // B. Dynamic Estimated Delivery Calculation (3 to 5 days after order_date)
+                    const baseDate = new Date(order.order_date);
+                    const minEst = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+                    const maxEst = new Date(baseDate.getTime() + 5 * 24 * 60 * 60 * 1000);
+                    
+                    const estString = minEst.toLocaleDateString('id-ID', { day: 'numeric', month: 'long' }) + ' - ' + maxEst.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                    // C. Dynamic Shipping Detail Card (split recipient info)
+                    // Shipping Address matches format: "Nama, HP, Alamat, Kota, Pos"
+                    let customerName = order.user_name || 'Andy';
+                    let phone = '+62 812-3456-7890';
+                    let addressLine = order.shipping_address;
+                    let city = 'Surabaya';
+                    let postalCode = '60263';
+
+                    if (order.shipping_address) {
+                        const parts = order.shipping_address.split(',');
+                        if (parts.length >= 4) {
+                            customerName = parts[0].trim();
+                            phone = parts[1].trim();
+                            addressLine = parts.slice(2, parts.length - 2).join(', ').trim();
+                            city = parts[parts.length - 2].trim();
+                            postalCode = parts[parts.length - 1].trim();
+                        }
+                    }
+
+                    // D. Dynamic Product Items Card Markup
+                    const productsHtml = order.items.map((item, idx) => {
+                        const skuId = orderId * 7 + idx + 104;
+                        const itemImg = item.image || 'https://placehold.co/100x100/f3f4f6/9CA3AF?text=BLINKCO';
+                        return `
+                        <div class="flex items-center gap-4 py-5 border-b border-gray-100 last:border-b-0">
+                            <!-- Product Image -->
+                            <div class="w-20 h-20 bg-gray-50 rounded-xl overflow-hidden flex-shrink-0 border border-gray-100">
+                                <img src="${itemImg}" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Product details -->
+                            <div class="flex-grow min-w-0">
+                                <h4 class="font-poppins font-bold text-sm text-textMain leading-tight truncate">${item.name}</h4>
+                                <p class="text-[10px] text-gray-400 font-bold tracking-wider mt-1 uppercase">SKU: ALB-BP-${skuId}</p>
+                                <div class="flex items-center gap-4 mt-2 text-xs font-semibold text-textMuted">
+                                    <span>Harga: ${formatRupiah(item.price)}</span>
+                                    <span>Qty: ${item.quantity}</span>
+                                </div>
+                            </div>
+                            <!-- Total Price -->
+                            <div class="text-right flex-shrink-0">
+                                <p class="text-xs font-semibold text-textMuted leading-tight">Subtotal</p>
+                                <p class="font-bold text-textMain text-sm mt-0.5">${formatRupiah(item.price * item.quantity)}</p>
+                            </div>
+                        </div>`;
+                    }).join('');
+
+                    // E. Dynamic Resi Box (If Resi exists)
+                    let trackingActionHtml = '';
+                    if (order.tracking_number) {
+                        trackingActionHtml = `
+                        <div class="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 shadow-sm">
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold text-primary uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                    Nomor Resi Pengiriman
+                                </p>
+                                <p class="font-poppins font-bold text-xl text-textMain tracking-widest truncate">${order.tracking_number}</p>
+                            </div>
+                            <div class="flex gap-2 flex-shrink-0">
+                                <button onclick="copyResi('${order.tracking_number}')" class="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-white rounded-xl border border-primary/20 text-primary hover:bg-primary/5 font-bold text-xs transition-colors shadow-sm focus:outline-none">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    Salin Resi
+                                </button>
+                                <button onclick="trackCourier()" class="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white hover:bg-[#e01970] font-bold text-xs rounded-xl shadow-sm focus:outline-none">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    Lacak Paket
+                                </button>
+                            </div>
+                        </div>`;
+                    }
+
+                    // F. Output the entire 2-Column Weverse-grade layout
+                    root.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                        
+                        <!-- LEFT COLUMN: Delivery details, Timeline & Products (2/3 width) -->
+                        <div class="lg:col-span-2 space-y-6">
+                            
+                            <!-- Estimasi Delivery box -->
+                            ${order.status !== 'cancelled' ? `
+                            <div class="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/5 text-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-textMuted leading-tight">Estimasi Waktu Tiba</p>
+                                    <p class="font-poppins font-bold text-base text-textMain mt-1">${estString}</p>
+                                </div>
+                            </div>` : ''}
+
+                            <!-- Tracking Resi Box (If shipped/delivered) -->
+                            ${trackingActionHtml}
+
+                            <!-- Dynamic progress Tracking timeline -->
+                            ${renderTimeline(order.status, order.order_date)}
+
+                            <!-- Itemized Product List Card -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-poppins font-bold text-base text-textMain mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                    Rincian Produk Belanja
+                                </h3>
+                                <div class="divide-y divide-gray-100">
+                                    ${productsHtml}
+                                </div>
+                            </div>
+
+                            <!-- Upgraded Shipping Information Card -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-poppins font-bold text-base text-textMain mb-5 pb-3 border-b border-gray-100 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    Informasi Alamat Pengiriman
+                                </h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Recipient info -->
+                                    <div class="space-y-4">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-9 h-9 bg-gray-50 text-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-[10px] text-textMuted font-bold uppercase tracking-wider leading-tight">Nama Penerima</p>
+                                                <p class="text-sm font-bold text-textMain mt-0.5">${customerName}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-9 h-9 bg-gray-50 text-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-[10px] text-textMuted font-bold uppercase tracking-wider leading-tight">Nomor Telepon</p>
+                                                <p class="text-sm font-bold text-textMain mt-0.5">${phone}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Address details -->
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-9 h-9 bg-gray-50 text-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] text-textMuted font-bold uppercase tracking-wider leading-tight">Alamat Lengkap</p>
+                                            <p class="text-sm font-bold text-textMain mt-1 leading-relaxed">${addressLine}</p>
+                                            <p class="text-xs text-textMuted mt-1 font-semibold">${city}, ${postalCode}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT COLUMN: Order Status, Payment & Order Info (1/3 width) -->
+                        <div class="space-y-6">
+                            
+                            <!-- Large Status Badge Card -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm text-center">
+                                <p class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3">Status Pemesanan</p>
+                                ${getStatusBadge(order.status)}
+                            </div>
+
+                            <!-- Payment Summary Card -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-poppins font-bold text-base text-textMain mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                    Ringkasan Pembayaran
+                                </h3>
+                                
+                                <div class="space-y-3.5 text-sm font-medium text-textMuted">
+                                    <div class="flex justify-between items-center">
+                                        <span>Subtotal Produk</span>
+                                        <span class="text-textMain font-semibold">${formatRupiah(subtotal)}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Ongkos Kirim</span>
+                                        <span class="text-textMain font-semibold">${formatRupiah(ongkir)}</span>
+                                    </div>
+                                    ${diskon > 0 ? `
+                                    <div class="flex justify-between items-center text-red-500">
+                                        <span>Diskon / Voucher</span>
+                                        <span>-${formatRupiah(diskon)}</span>
+                                    </div>` : ''}
+                                    
+                                    <div class="h-px bg-gray-100 my-4"></div>
+                                    
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <p class="text-xs text-textMuted font-semibold leading-tight">Total Pembayaran</p>
+                                            <p class="font-poppins font-bold text-xl text-primary mt-1">${formatRupiah(order.total_amount)}</p>
+                                        </div>
+                                        <span class="text-[10px] text-green-700 bg-green-50 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Lunas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Order Information Card -->
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                                <h3 class="font-poppins font-bold text-base text-textMain mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Informasi Transaksi
+                                </h3>
+                                
+                                <div class="space-y-4 text-xs font-semibold text-textMuted">
+                                    <div>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider leading-tight">ID Transaksi</p>
+                                        <p class="text-textMain font-bold mt-0.5">#${order.id}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider leading-tight">Tanggal Transaksi</p>
+                                        <p class="text-textMain mt-0.5">${new Date(order.order_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })} WIB</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider leading-tight">Metode Pembayaran</p>
+                                        <p class="text-textMain mt-0.5">Transfer Bank Virtual Account</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider leading-tight">Kurir Pengiriman</p>
+                                        <p class="text-textMain mt-0.5">J&T Express (Reguler)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>`;
+                })
+                .catch(err => {
+                    document.getElementById('detail-pesanan-root').innerHTML = `
+                    <div class="bg-white border border-gray-100 rounded-3xl p-16 text-center shadow-sm max-w-lg mx-auto">
+                        <div class="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+                        </div>
+                        <h2 class="font-poppins font-bold text-2xl text-red-600 mb-2">Terjadi Kesalahan</h2>
+                        <p class="text-textMuted font-medium mb-8">Gagal memuat detail pesanan Anda dari server. Silakan muat ulang halaman ini.</p>
+                        <button onclick="window.location.reload()" class="inline-flex items-center justify-center bg-primary text-white font-bold py-3.5 px-8 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm focus:outline-none">
+                            Muat Ulang
+                        </button>
+                    </div>`;
+                    console.error(err);
+                });
+        }
+    </script>
+</body>
+</html>

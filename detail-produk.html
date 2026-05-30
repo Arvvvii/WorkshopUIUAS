@@ -40,7 +40,7 @@
 </head>
 <body class="font-montserrat text-textMain bg-bgMain relative">
 
-    <!-- Sticky Navbar -->
+        <!-- Sticky Navbar -->
     <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -49,12 +49,14 @@
                     BLINK<span class="text-primary">CO</span>
                 </a>
                 
+                <!-- Desktop Links -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
-                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
-                    <a href="arsip-artikel.html" class="hover:text-primary transition-colors">Artikel</a>
-                    <a href="about.html" class="hover:text-primary transition-colors">About</a>
-                    <a href="history-transaksi.html" class="hover:text-primary transition-colors">Orders</a>
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors">Orders</a>
                 </div>
                 
                 <!-- Actions -->
@@ -71,10 +73,22 @@
                     </a>
                     
                     <!-- Mobile Menu Toggle -->
-                    <button class="md:hidden hover:text-primary focus:outline-none">
+                    <button id="mobile-menu-toggle" class="md:hidden hover:text-primary focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
+                <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
+                <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">About</a>
+                <a href="contact.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Contact</a>
+                <a href="history-transaksi.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Orders</a>
+                <a href="login.html" class="mobile-nav-link block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-textMain text-white hover:bg-gray-800">Log In</a>
             </div>
         </div>
     </nav>
@@ -83,8 +97,8 @@
     <div class="container mx-auto px-4 lg:px-8 py-6 text-sm font-medium text-textMuted border-b border-gray-100">
         <a href="index.html" class="hover:text-primary transition-colors">Home</a> &rsaquo; 
         <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a> &rsaquo; 
-        <a href="#" class="hover:text-primary transition-colors">Accessories</a> &rsaquo; 
-        <span class="text-textMain">Official Lightstick Ver.2</span>
+        <a href="#" class="hover:text-primary transition-colors" id="bc-cat">Category</a> &rsaquo; 
+        <span class="text-textMain" id="bc-name">Product Name</span>
     </div>
 
     <!-- Product Detail Section -->
@@ -97,24 +111,12 @@
                     <!-- Main Large Image -->
                     <div class="bg-gray-50 rounded-3xl overflow-hidden aspect-square border border-gray-100 flex items-center justify-center p-8 relative">
                         <span class="absolute top-6 left-6 bg-white shadow-sm border border-gray-100 text-textMain text-xs font-bold px-3 py-1.5 rounded-lg z-10">BEST SELLER</span>
-                        <img src="https://placehold.co/800x800/f3f4f6/f72585?text=Lightstick+Ver.2" alt="Product Image" class="w-full h-full object-contain">
+                        <img id="main-img" src="https://placehold.co/800x800/f3f4f6/f72585?text=Loading" alt="Product Image" class="w-full h-full object-contain transition-opacity duration-300">
                     </div>
                     
-                    <!-- Thumbnails -->
-                    <div class="grid grid-cols-4 gap-4 mt-4">
-                        <div class="aspect-square bg-gray-50 rounded-2xl border-2 border-primary overflow-hidden cursor-pointer">
-                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Merch" alt="Thumb 1" class="w-full h-full object-cover">
-                        </div>
-                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors">
-                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 2" class="w-full h-full object-cover">
-                        </div>
-                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors">
-                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 3" class="w-full h-full object-cover">
-                        </div>
-                        <div class="aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden cursor-pointer hover:border-primary transition-colors flex items-center justify-center relative">
-                            <img src="https://placehold.co/200x200/f3f4f6/f72585?text=Detail" alt="Thumb 4" class="w-full h-full object-cover opacity-50">
-                            <span class="absolute font-semibold text-textMain">+2</span>
-                        </div>
+                                        <!-- Thumbnails -->
+                    <div id="thumb-container" class="grid grid-cols-4 gap-4 mt-4">
+                        <!-- Dynamic thumbs -->
                     </div>
                 </div>
 
@@ -131,19 +133,35 @@
                         <span class="text-xs text-textMuted font-medium underline cursor-pointer">(128 reviews)</span>
                     </div>
 
-                    <h1 class="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl mb-4 text-textMain leading-tight">Official Lightstick Ver.2</h1>
+                    <h1 id="prod-name" class="font-poppins font-bold text-3xl md:text-4xl lg:text-5xl mb-4 text-textMain leading-tight">Loading...</h1>
+                    
+                    <!-- NEW META INFO -->
+                    <div id="prod-meta" class="flex flex-wrap gap-2 mb-6">
+                        <!-- Filled by JS -->
+                    </div>
                     
                     <div class="flex items-center gap-4 mb-6">
-                        <p class="font-poppins font-bold text-3xl text-primary">Rp 450,000</p>
+                        <p id="prod-price" class="font-poppins font-bold text-3xl text-primary">Rp 0</p>
                         <p class="text-lg text-textMuted line-through decoration-gray-300">Rp 500,000</p>
                     </div>
                     
-                    <p class="text-textMuted leading-relaxed mb-8 font-medium">
-                        The official BLACKPINK Lightstick Version 2 features an upgraded design with app connectivity, allowing synchronization with concert lighting. Powered by 3 AAA batteries (not included).
-                    </p>
+                    <p id="prod-desc" class="text-textMuted leading-relaxed mb-8 font-medium">Loading description...</p>
 
                     <!-- Divider -->
                     <div class="w-full h-px bg-gray-100 mb-8"></div>
+                    
+                    <!-- NEW VARIANTS SECTION -->
+                    <div id="variant-section" class="mb-8 hidden">
+                        <h4 class="font-semibold text-sm text-textMain mb-3">Select Variant</h4>
+                        <div id="variant-container" class="flex flex-wrap gap-3">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+
+                    <!-- NEW STOCK DISPLAY -->
+                    <div id="stock-display" class="mb-4">
+                        <!-- Filled by JS -->
+                    </div>
 
                     <!-- Qty Selector -->
                     <div class="mb-8 flex items-center gap-6">
@@ -165,7 +183,7 @@
                     </div>
                     
                     <!-- Trust Badges -->
-                    <div class="bg-bgAlt rounded-2xl p-4 border border-gray-100">
+                    <div class="bg-bgAlt rounded-2xl p-4 border border-gray-100 mb-8">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div class="flex items-center gap-3 text-textMain font-medium">
                                 <div class="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-sm text-primary">
@@ -178,6 +196,48 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
                                 <span>Fast Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Package Includes -->
+                    <div class="mb-8">
+                        <h4 class="font-poppins font-bold text-lg mb-3">Package Includes</h4>
+                        <ul class="list-disc pl-5 text-sm text-textMuted space-y-1">
+                            <li>1x Main Item</li>
+                            <li>1x Special Photocard (Random)</li>
+                            <li>1x BLINKCO Exclusive Sticker Set</li>
+                            <li>Premium Packaging Box</li>
+                        </ul>
+                    </div>
+
+                    <!-- Customer Reviews -->
+                    <div>
+                        <h4 class="font-poppins font-bold text-lg mb-4">Customer Reviews</h4>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <img src="assets/reviews/asa1.jpeg" class="w-8 h-8 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-bold text-textMain">Asa M.</p>
+                                        <div class="flex text-yellow-400 text-xs">
+                                            ★★★★★
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-textMuted">"Absolutely love it! The quality is amazing and it arrived so fast."</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <img src="assets/reviews/rora2.jpeg" class="w-8 h-8 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-bold text-textMain">Rora L.</p>
+                                        <div class="flex text-yellow-400 text-xs">
+                                            ★★★★★
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-textMuted">"Best purchase ever. The photocard was in perfect condition."</p>
                             </div>
                         </div>
                     </div>
@@ -239,67 +299,274 @@
     </footer>
 
     <!-- JS References -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.3"></script>
 
     <!-- Toast Notification Container & Detail Page Logic -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
-    <script>
-        // Quantity Logic
+        <script>
         let currentQty = 1;
+        let activeProduct = null;
+        let selectedVariant = null;
+
         function updateQty(change) {
             currentQty += change;
+            let maxStock = selectedVariant ? selectedVariant.stock : (activeProduct ? activeProduct.stock : 999);
             if (currentQty < 1) currentQty = 1;
+            if (currentQty > maxStock) currentQty = maxStock > 0 ? maxStock : 1;
             document.getElementById('qtyInput').value = currentQty;
         }
-    </script>
-    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (!productId) {
+                showErrorToast('Error', 'Product ID not found.');
+                return;
+            }
+
+            fetch('api/get_product_detail.php?id=' + productId)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        activeProduct = data.data;
+                        renderProduct(activeProduct);
+                    } else {
+                        showErrorToast('Error', 'Product not found.');
+                    }
+                })
+                .catch(err => {
+                    showErrorToast('Error', 'Failed to load product.');
+                });
+        });
+
+        function renderProduct(product) {
+            document.title = product.name + ' | BLINKCO';
+            document.getElementById('bc-cat').textContent = product.category_name || 'Uncategorized';
+            document.getElementById('bc-name').textContent = product.name;
+            document.getElementById('prod-name').textContent = product.name;
+            document.getElementById('prod-desc').textContent = product.description || 'No description available.';
+            
+            // SKU, Weight, Sold
+            document.getElementById('prod-meta').innerHTML = `
+                <span class="text-xs font-bold text-textMuted bg-gray-100 px-3 py-1 rounded-full uppercase tracking-wider">SKU: ${product.sku || 'N/A'}</span>
+                <span class="text-xs font-bold text-textMuted bg-gray-100 px-3 py-1 rounded-full uppercase tracking-wider">Weight: ${product.weight ? product.weight + 'g' : 'N/A'}</span>
+                <span class="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-wider">${product.sold_count || 0} Sold</span>
+            `;
+
+            updatePriceDisplay(product.price);
+            
+            // Compile all unique gallery images using basename to prevent duplicates
+            let galleryImages = [];
+            let uniqueBasenames = [];
+            
+            function getBasename(path) {
+                if (!path) return '';
+                const parts = path.split(/[/\\]/);
+                const filename = parts[parts.length - 1];
+                return filename.replace(/^\d+_\d+_/g, '').replace(/^\d+_/g, '');
+            }
+            
+            function addUniqueImage(url) {
+                if (!url || url === 'null' || url === '') return;
+                const base = getBasename(url);
+                if (!uniqueBasenames.includes(base)) {
+                    uniqueBasenames.push(base);
+                    galleryImages.push(url);
+                }
+            }
+
+            if (product.images && product.images.length > 0) {
+                product.images.forEach(img => {
+                    addUniqueImage(img.image_url);
+                });
+            } else if (product.image_url) {
+                addUniqueImage(product.image_url);
+            }
+
+            // Also append variant images to gallery if they are unique
+            if (product.variants && product.variants.length > 0) {
+                product.variants.forEach(v => {
+                    addUniqueImage(v.image_url);
+                });
+            }
+
+            // Render Gallery
+            const thumbContainer = document.getElementById('thumb-container');
+            thumbContainer.innerHTML = '';
+            
+            if (galleryImages.length > 0) {
+                document.getElementById('main-img').src = galleryImages[0];
+                galleryImages.forEach((imgUrl, index) => {
+                    const borderClass = index === 0 ? 'border-primary' : 'border-gray-200 hover:border-primary';
+                    thumbContainer.innerHTML += `
+                        <div class="aspect-square bg-white rounded-2xl border ${borderClass} overflow-hidden cursor-pointer transition-colors thumb-item" onclick="changeMainImg(this, '${imgUrl}')">
+                            <img src="${imgUrl}" class="w-full h-full object-cover">
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Variants
+            const variantContainer = document.getElementById('variant-container');
+            if (product.variants && product.variants.length > 0) {
+                document.getElementById('variant-section').classList.remove('hidden');
+                let html = '';
+                product.variants.forEach((v, index) => {
+                    html += `
+                        <button onclick="selectVariant(${index}, true)" id="var-btn-${index}" class="variant-btn px-5 py-2.5 border-2 border-gray-200 rounded-xl text-sm font-semibold text-textMain hover:border-primary transition-colors text-left flex flex-col gap-0.5 min-w-[120px]">
+                            <span>${v.variant_name}</span>
+                            <span class="text-[11px] text-textMuted">Stock: ${v.stock}</span>
+                        </button>
+                    `;
+                });
+                variantContainer.innerHTML = html;
+                
+                // Set initial price to base price and display base product stock without selecting a variant
+                selectedVariant = null;
+                updateStockDisplay(product.stock);
+            } else {
+                document.getElementById('variant-section').classList.add('hidden');
+                selectedVariant = null;
+                updateStockDisplay(product.stock);
+            }
+        }
+
+        function updatePriceDisplay(basePrice, addOn = 0) {
+            const finalPrice = Number(basePrice) + Number(addOn);
+            const priceStr = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(finalPrice).replace(/,00$/, '');
+            document.getElementById('prod-price').textContent = priceStr;
+        }
+
+        function updateStockDisplay(stock) {
+            const stockDisplay = document.getElementById('stock-display');
+            if (stock > 0) {
+                stockDisplay.innerHTML = `<span class="text-green-600 bg-green-50 px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>In Stock (${stock})</span>`;
+            } else {
+                stockDisplay.innerHTML = `<span class="text-red-600 bg-red-50 px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Out of Stock</span>`;
+            }
+            // reset qty if it exceeds stock
+            if (currentQty > stock) {
+                currentQty = stock > 0 ? stock : 1;
+                document.getElementById('qtyInput').value = currentQty;
+            }
+        }
+
+        function selectVariant(index, changeImage = true) {
+            const variant = activeProduct.variants[index];
+            selectedVariant = variant;
+            
+            // update UI buttons
+            document.querySelectorAll('.variant-btn').forEach(btn => {
+                btn.classList.remove('border-primary', 'bg-primary/5', 'text-primary');
+                btn.classList.add('border-gray-200', 'text-textMain');
+            });
+            const activeBtn = document.getElementById('var-btn-' + index);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-gray-200', 'text-textMain');
+                activeBtn.classList.add('border-primary', 'bg-primary/5', 'text-primary');
+            }
+
+            // update price and stock
+            updatePriceDisplay(activeProduct.price, variant.additional_price);
+            updateStockDisplay(variant.stock);
+            
+            // update image if variant has one and changeImage is true
+            if (changeImage && variant.image_url && variant.image_url !== 'null' && variant.image_url !== '') {
+                document.getElementById('main-img').src = variant.image_url;
+                // clear active thumb borders
+                document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('border-primary', 'border-gray-200'));
+                document.querySelectorAll('.thumb-item').forEach(t => t.classList.add('border-gray-200'));
+                
+                // Highlight corresponding thumbnail in gallery if it exists
+                document.querySelectorAll('.thumb-item img').forEach(img => {
+                    const relativeSrc = img.getAttribute('src');
+                    if (relativeSrc === variant.image_url) {
+                        const thumbDiv = img.parentElement;
+                        thumbDiv.classList.remove('border-gray-200');
+                        thumbDiv.classList.add('border-primary');
+                    }
+                });
+            }
+        }
+
+        function changeMainImg(element, src) {
+            document.getElementById('main-img').src = src;
+            document.querySelectorAll('.thumb-item').forEach(t => {
+                t.classList.remove('border-primary');
+                t.classList.add('border-gray-200');
+            });
+            element.classList.remove('border-gray-200');
+            element.classList.add('border-primary');
+        }
+
         function checkLogin() {
-            const user = localStorage.getItem('currentUser');
-            if (!user) {
-                alert('Silakan Log In terlebih dahulu untuk mulai berbelanja!');
-                window.location.href = 'login.html';
+            if (!localStorage.getItem('currentUser')) {
+                showInfoToast('Login Required', 'Please Log In to start shopping!');
+                setTimeout(() => window.location.href = 'login.html', 1500);
                 return false;
             }
             return true;
         }
 
-        function saveItemToDB() {
-            const qtyInput = document.getElementById('qtyInput');
-            const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-            const produk = {
-                id: 'prod_lightstick',
-                name: 'Official Lightstick Ver.2',
-                price: 450000,
-                qty: qty,
-                image: 'https://placehold.co/400x400/f3f4f6/f72585?text=Lightstick'
-            };
+        function masukKeranjang() {
+            if (!checkLogin() || !activeProduct) return;
             
-            let keranjang = JSON.parse(localStorage.getItem('blinkco_cart')) || [];
-            if (!Array.isArray(keranjang)) keranjang = []; 
-            
-            // Update qty if item already exists
-            const existIndex = keranjang.findIndex(item => item.id === produk.id);
-            if (existIndex > -1) {
-                keranjang[existIndex].qty += qty;
-            } else {
-                keranjang.push(produk);
+            if (activeProduct.variants && activeProduct.variants.length > 0 && !selectedVariant) {
+                showInfoToast('Pilih Varian', 'Silakan pilih varian produk terlebih dahulu.');
+                return;
             }
             
-            localStorage.setItem('blinkco_cart', JSON.stringify(keranjang));
-        }
+            let stock = selectedVariant ? selectedVariant.stock : activeProduct.stock;
+            if (stock < 1) {
+                showErrorToast('Out of Stock', 'Sorry, this item is out of stock.');
+                return;
+            }
 
-        function masukKeranjang() {
-            if (!checkLogin()) return; // Stop if not logged in
-            saveItemToDB();
-            alert('✅ Produk berhasil dimasukkan ke keranjang!');
-            window.location.reload(); // Refresh to update cart badge
+            const productName = selectedVariant ? `${activeProduct.name} - ${selectedVariant.variant_name}` : activeProduct.name;
+            const finalPrice = selectedVariant ? Number(activeProduct.price) + Number(selectedVariant.additional_price) : activeProduct.price;
+            const finalImage = selectedVariant && selectedVariant.image_url ? selectedVariant.image_url : (activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images[0].image_url : activeProduct.image_url);
+
+            window.tambahKeKeranjangDB(
+                activeProduct.id,
+                productName,
+                finalPrice,
+                finalImage
+            );
         }
 
         function beliLangsung() {
-            if (!checkLogin()) return; // Stop if not logged in
-            saveItemToDB();
-            // Redirect directly to checkout without alert
+            if (!checkLogin() || !activeProduct) return;
+            
+            if (activeProduct.variants && activeProduct.variants.length > 0 && !selectedVariant) {
+                showInfoToast('Pilih Varian', 'Silakan pilih varian produk terlebih dahulu.');
+                return;
+            }
+            
+            let stock = selectedVariant ? selectedVariant.stock : activeProduct.stock;
+            if (stock < 1) {
+                showErrorToast('Out of Stock', 'Sorry, this item is out of stock.');
+                return;
+            }
+            
+            const productName = selectedVariant ? `${activeProduct.name} - ${selectedVariant.variant_name}` : activeProduct.name;
+            const finalPrice = selectedVariant ? Number(activeProduct.price) + Number(selectedVariant.additional_price) : activeProduct.price;
+            const finalImage = selectedVariant && selectedVariant.image_url ? selectedVariant.image_url : (activeProduct.images && activeProduct.images.length > 0 ? activeProduct.images[0].image_url : activeProduct.image_url);
+
+            let cart = JSON.parse(localStorage.getItem('blinkco_cart')) || [];
+            if (!Array.isArray(cart)) cart = [];
+
+            // Add qty
+            cart.push({
+                id: String(activeProduct.id) + (selectedVariant ? '-' + selectedVariant.id : ''),
+                name: productName,
+                price: Number(finalPrice),
+                qty: currentQty,
+                image: finalImage
+            });
+            
+            localStorage.setItem('blinkco_cart', JSON.stringify(cart));
             window.location.href = 'pembayaran.html';
         }
     </script>

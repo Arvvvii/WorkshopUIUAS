@@ -40,32 +40,55 @@
 </head>
 <body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
 
-    <!-- Sticky Navbar -->
+        <!-- Sticky Navbar -->
     <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
                 <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
                     BLINK<span class="text-primary">CO</span>
                 </a>
+                
+                <!-- Desktop Links -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
-                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
-                    <a href="history-transaksi.html" class="text-primary transition-colors">Orders</a>
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors">Orders</a>
                 </div>
                 
+                <!-- Actions -->
                 <div class="flex items-center space-x-5">
-                    <a href="keranjang.html" class="relative hover:text-primary transition-colors">
+                    <!-- Cart Icon -->
+                    <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </a>
                     
-                    <div class="hidden md:flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold font-poppins text-xs">
-                            <span id="user-initial">?</span>
-                        </div>
-                        <span id="user-name-display" class="text-sm font-semibold">Guest</span>
-                    </div>
+                    <!-- Login Button -->
+                    <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
+                        Log In
+                    </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-toggle" class="md:hidden hover:text-primary focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
+                <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
+                <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">About</a>
+                <a href="contact.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Contact</a>
+                <a href="history-transaksi.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Orders</a>
+                <a href="login.html" class="mobile-nav-link block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-textMain text-white hover:bg-gray-800">Log In</a>
             </div>
         </div>
     </nav>
@@ -86,7 +109,7 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.3"></script>
     <script>
         function formatRupiah(n) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n);
@@ -151,22 +174,27 @@
                         const date = new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
                         const items = order.items_summary || `${order.item_count} item(s)`;
                         return `
-                        <div class="p-6 hover:bg-gray-50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div class="flex items-center gap-5">
-                                <div class="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary flex-shrink-0">
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <a href="detail-pesanan.html?id=${order.id}" class="block p-6 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 group">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-5 flex-1">
+                                    <div class="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-poppins font-semibold text-lg text-textMain mb-1 group-hover:text-primary transition-colors">Order #${order.id}</h3>
+                                        <p class="text-xs text-textMuted font-medium mb-1">${date}</p>
+                                        <p class="text-xs text-textMuted truncate max-w-xs">${items}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="font-poppins font-semibold text-lg text-textMain mb-1">Order #${order.id}</h3>
-                                    <p class="text-xs text-textMuted font-medium mb-1">${date}</p>
-                                    <p class="text-xs text-textMuted truncate max-w-xs">${items}</p>
+                                <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center mt-4 md:mt-0 pt-4 md:pt-0 border-t border-gray-100 md:border-t-0 gap-3">
+                                    <p class="font-bold text-textMain text-lg">${formatRupiah(order.total_price)}</p>
+                                    ${statusBadge(order.status)}
+                                </div>
+                                <div class="hidden md:flex items-center justify-center text-gray-300 group-hover:text-primary transition-colors pl-4 border-l border-gray-100">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </div>
                             </div>
-                            <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center mt-4 md:mt-0 pt-4 md:pt-0 border-t border-gray-100 md:border-t-0 gap-3">
-                                <p class="font-bold text-textMain text-lg">${formatRupiah(order.total_price)}</p>
-                                ${statusBadge(order.status)}
-                            </div>
-                        </div>`;
+                        </a>`;
                     }).join('');
                 })
                 .catch(() => {

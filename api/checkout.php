@@ -26,20 +26,32 @@ try {
     $stmt->execute([$user_id, $total_amount, $shipping_address]);
     $order_id = $pdo->lastInsertId();
 
-    $stmtItem = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+    $stmtItem = $pdo->prepare("INSERT INTO order_items (order_id, product_id, variant_id, quantity, price) VALUES (?, ?, ?, ?, ?)");
     foreach ($items as $item) {
-        $product_id = $item['id'] ?? null;
+        $id_raw = $item['id'] ?? null;
+        $product_id = 1; // Fallback
+        $variant_id = null;
         
-        // Handle mock string IDs from the front-end if any, replace with 1 (or handle properly) 
-        // This prevents constraint failures if mock product IDs were used before connecting real DB.
-        if (!is_numeric($product_id)) {
-            $product_id = 1; // Fallback to avoid error for static data testing
+        if (is_string($id_raw) && strpos($id_raw, '-') !== false) {
+            $parts = explode('-', $id_raw);
+            $product_id = intval($parts[0]);
+            $variant_id = intval($parts[1]);
+        } else {
+            $product_id = intval($id_raw) > 0 ? intval($id_raw) : 1;
         }
 
         $quantity = $item['qty'] ?? 1;
         $price = $item['price'] ?? 0;
         
-        $stmtItem->execute([$order_id, $product_id, $quantity, $price]);
+        $stmtItem->execute([$order_id, $product_id, $variant_id, $quantity, $price]);
+
+        // Decrement stock
+        if ($variant_id) {
+            $stmtVarStock = $pdo->prepare("UPDATE product_variants SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+            $stmtVarStock->execute([$quantity, $variant_id]);
+        }
+        $stmtProdStock = $pdo->prepare("UPDATE products SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+        $stmtProdStock->execute([$quantity, $product_id]);
     }
 
     $pdo->commit();

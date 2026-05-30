@@ -9,13 +9,13 @@ try {
         $stmt = $pdo->prepare("
             SELECT
                 o.id,
-                o.total_price,
+                o.total_amount as total_price,
                 o.status,
-                o.created_at,
+                o.order_date as created_at,
                 u.name AS user_name,
                 u.email AS user_email,
                 GROUP_CONCAT(
-                    CONCAT(oi.quantity, 'x ', p.name)
+                    CONCAT(oi.quantity, 'x ', p.name, IF(v.variant_name IS NOT NULL, CONCAT(' - ', v.variant_name), ''))
                     ORDER BY oi.id
                     SEPARATOR ', '
                 ) AS items_summary,
@@ -24,9 +24,10 @@ try {
             JOIN users u ON o.user_id = u.id
             LEFT JOIN order_items oi ON oi.order_id = o.id
             LEFT JOIN products p ON oi.product_id = p.id
+            LEFT JOIN product_variants v ON oi.variant_id = v.id
             WHERE o.user_id = ?
             GROUP BY o.id
-            ORDER BY o.created_at DESC
+            ORDER BY o.order_date DESC
         ");
         $stmt->execute([$user_id]);
     } else {
@@ -34,13 +35,13 @@ try {
         $stmt = $pdo->query("
             SELECT
                 o.id,
-                o.total_price,
+                o.total_amount as total_price,
                 o.status,
-                o.created_at,
+                o.order_date as created_at,
                 u.name AS user_name,
                 u.email AS user_email,
                 GROUP_CONCAT(
-                    CONCAT(oi.quantity, 'x ', p.name)
+                    CONCAT(oi.quantity, 'x ', p.name, IF(v.variant_name IS NOT NULL, CONCAT(' - ', v.variant_name), ''))
                     ORDER BY oi.id
                     SEPARATOR ', '
                 ) AS items_summary,
@@ -49,8 +50,9 @@ try {
             JOIN users u ON o.user_id = u.id
             LEFT JOIN order_items oi ON oi.order_id = o.id
             LEFT JOIN products p ON oi.product_id = p.id
+            LEFT JOIN product_variants v ON oi.variant_id = v.id
             GROUP BY o.id
-            ORDER BY o.created_at DESC
+            ORDER BY o.order_date DESC
         ");
     }
 

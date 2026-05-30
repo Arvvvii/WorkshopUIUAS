@@ -75,7 +75,7 @@
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2">
                             <span class="ml-2 text-sm text-textMuted font-medium">Remember me</span>
                         </label>
-                        <a href="#" class="text-sm font-semibold text-primary hover:text-[#e01970] transition-colors">Forgot password?</a>
+                        <a href="lupa-password.html" class="text-sm font-semibold text-primary hover:text-[#e01970] transition-colors">Forgot password?</a>
                     </div>
                     
                     <button type="submit" class="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm mt-4">
@@ -83,7 +83,8 @@
                     </button>
                 </form>
                 
-                <div class=" mt-4 text-center text-xs text-textMuted font-medium bg-blue-50 text-blue-800 py-2 rounded-lg\>Demo - User: andy@blinkco.com | Admin: admin@blinkco.com</div><!-- Footer link -->
+                
+                <!-- Footer link -->
                 <p class="mt-8 text-center text-sm font-medium text-textMuted">
                     Don't have an account? <a href="register.html" class="text-primary font-semibold hover:text-[#e01970] transition-colors">Sign up</a>
                 </p>
@@ -112,21 +113,24 @@
                     const currentUser = data.user;
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     localStorage.setItem('blinkco_user', JSON.stringify({ isLoggedIn: true, ...currentUser }));
-                    alert(data.message);
-                    if (currentUser.role === 'admin') {
-                        window.location.href = 'admin/dashboard.html';
-                    } else {
-                        window.location.href = 'index.html';
-                    }
+                    showSuccessToast('Berhasil', data.message);
+                    setTimeout(() => {
+                        if (currentUser.role === 'admin') {
+                            window.location.href = 'admin/dashboard.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1500);
                 } else {
-                    alert(data.message);
+                    showErrorToast('Gagal', data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred during login.');
+                showErrorToast('Error', 'An error occurred during login.');
             });
         });
     </script>
+    <script src="js/script.js?v=1.3"></script>
 </body>
 </html>

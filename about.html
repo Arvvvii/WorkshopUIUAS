@@ -40,7 +40,7 @@
 </head>
 <body class="font-montserrat text-textMain bg-bgMain">
 
-    <!-- Sticky Navbar -->
+        <!-- Sticky Navbar -->
     <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -51,10 +51,12 @@
                 
                 <!-- Desktop Links -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
-                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
-                    <a href="arsip-artikel.html" class="hover:text-primary transition-colors">Artikel</a>
-                    <a href="history-transaksi.html" class="hover:text-primary transition-colors">Orders</a>
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors">Orders</a>
                 </div>
                 
                 <!-- Actions -->
@@ -71,10 +73,22 @@
                     </a>
                     
                     <!-- Mobile Menu Toggle -->
-                    <button class="md:hidden hover:text-primary focus:outline-none">
+                    <button id="mobile-menu-toggle" class="md:hidden hover:text-primary focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
+                <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
+                <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">About</a>
+                <a href="contact.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Contact</a>
+                <a href="history-transaksi.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Orders</a>
+                <a href="login.html" class="mobile-nav-link block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-textMain text-white hover:bg-gray-800">Log In</a>
             </div>
         </div>
     </nav>
@@ -90,8 +104,9 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-                <div class="rounded-3xl overflow-hidden shadow-xl bg-gray-100 aspect-video flex items-center justify-center relative">
-                    <img src="https://placehold.co/800x450/f3f4f6/f72585?text=BLINKCO+Universe" alt="About" class="w-full h-full object-cover">
+                <!-- Premium card with hover scale and ambient shadow glow -->
+                <div class="group rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_20px_45px_rgba(247,37,133,0.12)] border border-gray-100 hover:border-primary/20 transition-all duration-500 bg-gray-100 aspect-video flex items-center justify-center relative">
+                    <img src="assets/about/about-main.jpeg" alt="About" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 </div>
                 <div class="space-y-6">
                     <h2 class="font-poppins font-bold text-3xl text-textMain">Our Mission</h2>
@@ -180,6 +195,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.3"></script>
 </body>
 </html>

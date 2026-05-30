@@ -40,30 +40,55 @@
 </head>
 <body class="font-montserrat text-textMain bg-bgAlt min-h-screen">
 
-    <!-- Sticky Navbar -->
+        <!-- Sticky Navbar -->
     <nav class="sticky top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
                 <a href="index.html" class="font-poppins font-bold text-2xl tracking-wide">
                     BLINK<span class="text-primary">CO</span>
                 </a>
                 
+                <!-- Desktop Links -->
                 <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="index.html" class="hover:text-primary transition-colors">Home</a>
-                    <a href="katalog.html" class="hover:text-primary transition-colors">Shop</a>
-                    <a href="arsip-artikel.html" class="text-primary transition-colors">News</a>
+                    <a href="index.html" class="nav-link hover:text-primary transition-colors">Home</a>
+                    <a href="katalog.html" class="nav-link hover:text-primary transition-colors">Shop</a>
+                    <a href="arsip-artikel.html" class="nav-link hover:text-primary transition-colors">News</a>
+                    <a href="about.html" class="nav-link hover:text-primary transition-colors">About</a>
+                    <a href="contact.html" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    <a href="history-transaksi.html" class="nav-link hover:text-primary transition-colors">Orders</a>
                 </div>
                 
+                <!-- Actions -->
                 <div class="flex items-center space-x-5">
+                    <!-- Cart Icon -->
                     <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                     </a>
                     
+                    <!-- Login Button -->
                     <a href="login.html" class="hidden md:inline-flex bg-textMain text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm">
                         Log In
                     </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-toggle" class="md:hidden hover:text-primary focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
+                <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
+                <a href="about.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">About</a>
+                <a href="contact.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Contact</a>
+                <a href="history-transaksi.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Orders</a>
+                <a href="login.html" class="mobile-nav-link block px-3 py-2 mt-4 text-center rounded-md text-base font-medium bg-textMain text-white hover:bg-gray-800">Log In</a>
             </div>
         </div>
     </nav>
@@ -74,11 +99,11 @@
             <h1 class="font-poppins font-bold text-4xl lg:text-5xl text-textMain mb-4">Latest Updates</h1>
             <p class="text-textMuted font-medium max-w-2xl mx-auto">Stay up to date with the newest releases, tour announcements, and exclusive interviews from the BLINK universe.</p>
             
-            <div class="flex flex-wrap justify-center gap-3 mt-8">
-                <span class="bg-textMain text-white px-4 py-2 rounded-full text-xs font-semibold cursor-pointer">All News</span>
-                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Music</span>
-                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Fashion</span>
-                <span class="bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Interviews</span>
+            <div class="flex flex-wrap justify-center gap-3 mt-8" id="category-filters">
+                <span data-category="All" class="category-btn bg-textMain text-white px-4 py-2 rounded-full text-xs font-semibold cursor-pointer transition-colors border border-transparent">All News</span>
+                <span data-category="Music" class="category-btn bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Music</span>
+                <span data-category="Fashion" class="category-btn bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Fashion</span>
+                <span data-category="Interviews" class="category-btn bg-bgAlt border border-gray-200 text-textMuted hover:border-primary hover:text-primary px-4 py-2 rounded-full text-xs font-semibold transition-colors cursor-pointer">Interviews</span>
             </div>
         </div>
     </div>
@@ -86,7 +111,7 @@
     <!-- Article Grid -->
     <section class="py-16">
         <div class="container mx-auto px-4 lg:px-8">
-            <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300 opacity-100">
                 <div class="col-span-full text-center text-textMuted py-12">Loading articles...</div>
             </div>
             
@@ -100,17 +125,21 @@
     </section>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('api/get_articles.php')
-                .then(res => res.json())
-                .then(data => {
-                    const grid = document.getElementById('article-grid');
-                    if (!data.success || data.data.length === 0) {
-                        grid.innerHTML = '<div class="col-span-full text-center text-textMuted py-12">No articles found.</div>';
-                        return;
-                    }
+        let allArticles = [];
+
+        function renderArticles(articles) {
+            const grid = document.getElementById('article-grid');
+            
+            // Fade out
+            grid.classList.remove('opacity-100');
+            grid.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                if (articles.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center text-textMuted py-12">No articles found in this category.</div>';
+                } else {
                     grid.innerHTML = '';
-                    data.data.forEach(article => {
+                    articles.forEach(article => {
                         const image = article.image_url || 'https://placehold.co/800x450/f3f4f6/f72585?text=News';
                         const date = article.created_at
                             ? new Date(article.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -134,11 +163,51 @@
                             </div>
                         </a>`);
                     });
+                }
+                
+                // Fade in
+                grid.classList.remove('opacity-0');
+                grid.classList.add('opacity-100');
+            }, 300); // Wait for fade out
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('api/get_articles.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        allArticles = data.data;
+                        renderArticles(allArticles);
+                    } else {
+                        document.getElementById('article-grid').innerHTML = '<div class="col-span-full text-center text-textMuted py-12">No articles found.</div>';
+                    }
                 })
                 .catch(() => {
                     document.getElementById('article-grid').innerHTML =
                         '<div class="col-span-full text-center text-red-400 py-12">Gagal memuat artikel.</div>';
                 });
+
+            // Filter logic
+            const btns = document.querySelectorAll('.category-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button styling
+                    btns.forEach(b => {
+                        b.classList.remove('bg-textMain', 'text-white');
+                        b.classList.add('bg-bgAlt', 'text-textMuted', 'border-gray-200');
+                    });
+                    btn.classList.remove('bg-bgAlt', 'text-textMuted', 'border-gray-200');
+                    btn.classList.add('bg-textMain', 'text-white', 'border-transparent');
+
+                    const category = btn.getAttribute('data-category');
+                    if (category === 'All') {
+                        renderArticles(allArticles);
+                    } else {
+                        const filtered = allArticles.filter(a => (a.category || '').toLowerCase() === category.toLowerCase());
+                        renderArticles(filtered);
+                    }
+                });
+            });
         });
     </script>
 
@@ -150,6 +219,6 @@
     </footer>
 
     <!-- JS References -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=1.3"></script>
 </body>
 </html>

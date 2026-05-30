@@ -16,9 +16,16 @@ if (!in_array($data['status'], $allowed_statuses)) {
     exit;
 }
 
+$tracking_number = isset($data['tracking_number']) ? $data['tracking_number'] : null;
+
 try {
-    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
-    $stmt->execute([$data['status'], (int)$data['order_id']]);
+    if ($tracking_number !== null) {
+        $stmt = $pdo->prepare("UPDATE orders SET status = ?, tracking_number = ? WHERE id = ?");
+        $stmt->execute([$data['status'], $tracking_number, (int)$data['order_id']]);
+    } else {
+        $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+        $stmt->execute([$data['status'], (int)$data['order_id']]);
+    }
 
     if ($stmt->rowCount() === 0) {
         echo json_encode(['success' => false, 'message' => 'Order not found or status unchanged.']);

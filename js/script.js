@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(userStr);
             const loginBtns = document.querySelectorAll('a[href="login.html"]');
             loginBtns.forEach(btn => {
-                if (btn.textContent.trim().includes('Log In') || btn.textContent.trim().includes('Login')) {
+                if (btn.textContent.trim() === 'Log In' || btn.textContent.trim() === 'Login') {
                     btn.textContent = `Hi, ${user.name}`;
-                    btn.href = 'history-transaksi.html';
+                    btn.href = 'profile.html';
                     btn.classList.add('flex', 'items-center');
 
                     const logoutBtn = document.createElement('button');
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         try {
             const parsed = JSON.parse(existingCart);
-            // Migrate old {items:[], total:0} structure to flat array
             if (!Array.isArray(parsed) && parsed.items) {
                 localStorage.setItem('blinkco_cart', JSON.stringify(parsed.items || []));
             }
@@ -48,17 +47,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'blinkco_cart') updateCartBadge();
     });
 
-    // 3. Mobile menu toggle - prevent overlay blocking clicks
-    const mobileToggle = document.querySelector('button.md\\:hidden');
+    // 3. Mobile menu toggle — uses id="mobile-menu-toggle" & id="mobile-menu"
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     if (mobileToggle && mobileMenu) {
+        const iconHamburger = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>`;
+        const iconClose = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+
         mobileToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            mobileMenu.classList.toggle('hidden');
+            const isOpen = mobileMenu.classList.toggle('hidden') === false;
+            mobileToggle.innerHTML = isOpen ? iconClose : iconHamburger;
         });
+
         document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+            if (!mobileMenu.classList.contains('hidden') &&
+                !mobileMenu.contains(e.target) &&
+                !mobileToggle.contains(e.target)) {
                 mobileMenu.classList.add('hidden');
+                mobileToggle.innerHTML = iconHamburger;
             }
         });
     }
@@ -69,19 +76,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('currentUser')) {
                 e.preventDefault();
                 e.stopPropagation();
-                alert('Silakan Log In untuk melihat keranjang');
-                window.location.href = 'login.html';
+                showInfoToast('Login Diperlukan', 'Silakan login terlebih dahulu');
+                setTimeout(() => window.location.href = 'login.html', 1600);
             }
         });
     });
+
+    // 5. Auto-highlight active nav link
+    setActiveNavLink();
 });
 
-// ─── ADD TO CART (dynamic product cards on index.html & katalog.html) ───────
+// ─── ACTIVE NAV LINK ──────────────────────────────────────────────────────────
+
+function setActiveNavLink() {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+    // Desktop nav links (class="nav-link")
+    document.querySelectorAll('nav .nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('text-primary');
+        }
+    });
+
+    // Mobile nav links (class="mobile-nav-link")
+    document.querySelectorAll('#mobile-menu .mobile-nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('text-primary');
+        }
+    });
+}
+
+// ─── ADD TO CART (dynamic product cards — index.html & katalog.html) ─────────
 
 window.tambahKeKeranjangDB = function(id, name, price, image) {
     if (!localStorage.getItem('currentUser')) {
-        alert('Silakan Log In terlebih dahulu!');
-        window.location.href = 'login.html';
+        showInfoToast('Login Diperlukan', 'Login diperlukan untuk menambahkan produk ke keranjang');
+        setTimeout(() => window.location.href = 'login.html', 1600);
         return;
     }
     let cart = JSON.parse(localStorage.getItem('blinkco_cart')) || [];
@@ -98,43 +128,7 @@ window.tambahKeKeranjangDB = function(id, name, price, image) {
     showCleanToast(name, 1);
 };
 
-// ─── ADD TO CART (legacy — detail-produk.html) ───────────────────────────────
-
-window.processAddToCart = function(redirect) {
-    if (!localStorage.getItem('currentUser')) {
-        alert('Silakan Log In untuk mulai berbelanja!');
-        window.location.href = 'login.html';
-        return;
-    }
-
-    const productName = 'Official Lightstick Ver.2';
-    const price = 450000;
-    const qtyInput = document.getElementById('qtyInput');
-    const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-
-    let cart = JSON.parse(localStorage.getItem('blinkco_cart')) || [];
-    if (!Array.isArray(cart)) cart = [];
-
-    const exist = cart.findIndex(i => i.id === 'prod_lightstick');
-    if (exist > -1) {
-        cart[exist].qty += qty;
-    } else {
-        cart.push({ id: 'prod_lightstick', name: productName, price, qty, image: '' });
-    }
-    localStorage.setItem('blinkco_cart', JSON.stringify(cart));
-    updateCartBadge();
-
-    document.querySelectorAll('#cart-badge').forEach(badge => {
-        badge.classList.add('transition-transform', 'duration-300', 'scale-150');
-        setTimeout(() => badge.classList.remove('scale-150'), 300);
-    });
-
-    if (redirect) {
-        window.location.href = 'pembayaran.html';
-    }
-};
-
-// ─── BADGE ───────────────────────────────────────────────────────────────────
+// ─── CART BADGE ───────────────────────────────────────────────────────────────
 
 function updateCartBadge() {
     const userStr = localStorage.getItem('currentUser');
@@ -160,24 +154,22 @@ function updateCartBadge() {
     } catch(e) {}
 }
 
-// ─── WISHLIST TOGGLE ──────────────────────────────────────────────────────────
+// ─── WISHLIST TOGGLE ─────────────────────────────────────────────────────────
 
 window.toggleWishlist = function(btn) {
     const svg = btn.querySelector('svg');
     if (svg.getAttribute('fill') === 'none') {
         svg.setAttribute('fill', '#F72585');
         svg.setAttribute('stroke', '#F72585');
-        svg.classList.add('text-primary');
     } else {
         svg.setAttribute('fill', 'none');
         svg.setAttribute('stroke', 'currentColor');
-        svg.classList.remove('text-primary');
     }
 };
 
-// ─── TOAST NOTIFICATION ───────────────────────────────────────────────────────
+// ─── TOAST NOTIFICATION SYSTEM ───────────────────────────────────────────────
 
-function showCleanToast(productName, qty) {
+function _getToastContainer() {
     let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -185,28 +177,85 @@ function showCleanToast(productName, qty) {
         container.className = 'fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none';
         document.body.appendChild(container);
     }
+    return container;
+}
 
+function _createToast(iconHtml, title, subtitle) {
+    const container = _getToastContainer();
     const toast = document.createElement('div');
-    toast.className = 'bg-white border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-xl p-4 flex items-center gap-4 transform transition-all duration-300 translate-y-12 opacity-0 pointer-events-auto min-w-[300px]';
-    toast.innerHTML = `
-        <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0 text-green-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-        </div>
-        <div class="flex-1">
-            <h4 class="font-poppins font-semibold text-sm text-textMain leading-tight">Added to Cart</h4>
-            <p class="text-xs text-textMuted font-medium mt-0.5">${qty}x ${productName}</p>
-        </div>
-        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    `;
-    container.appendChild(toast);
+    toast.className = [
+        'bg-white border border-gray-100 rounded-xl p-4',
+        'flex items-center gap-4',
+        'shadow-[0_8px_30px_rgb(0,0,0,0.08)]',
+        'transform transition-all duration-300 translate-y-12 opacity-0',
+        'pointer-events-auto min-w-[300px] max-w-sm'
+    ].join(' ');
 
-    setTimeout(() => toast.classList.remove('translate-y-12', 'opacity-0'), 10);
+    toast.innerHTML = `
+        ${iconHtml}
+        <div class="flex-1 min-w-0">
+            <h4 class="font-poppins font-semibold text-sm text-gray-900 leading-tight">${title}</h4>
+            ${subtitle ? `<p class="text-xs text-gray-500 font-medium mt-0.5 truncate">${subtitle}</p>` : ''}
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 flex-shrink-0" aria-label="Tutup notifikasi">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>`;
+
+    container.appendChild(toast);
+    // Animate in
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => toast.classList.remove('translate-y-12', 'opacity-0'));
+    });
+    // Auto-dismiss after 3.5s
     setTimeout(() => {
         if (document.body.contains(toast)) {
             toast.classList.add('translate-y-12', 'opacity-0');
             setTimeout(() => { if (document.body.contains(toast)) toast.remove(); }, 300);
         }
     }, 3500);
+    return toast;
 }
+
+// ── Success (green) — "Added to Cart" ──
+function showCleanToast(productName, qty) {
+    _createToast(
+        `<div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0 text-green-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        </div>`,
+        'Ditambahkan ke Keranjang',
+        `${qty}x ${productName}`
+    );
+}
+
+// ── Generic Success (green) ──
+window.showSuccessToast = function(title, subtitle) {
+    _createToast(
+        `<div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0 text-green-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        </div>`,
+        title,
+        subtitle || ''
+    );
+};
+
+// ── Error (red) ──
+window.showErrorToast = function(title, subtitle) {
+    _createToast(
+        `<div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0 text-red-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+        </div>`,
+        title,
+        subtitle || ''
+    );
+};
+
+// ── Info (blue) ──
+window.showInfoToast = function(title, subtitle) {
+    _createToast(
+        `<div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 text-blue-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>`,
+        title,
+        subtitle || ''
+    );
+};

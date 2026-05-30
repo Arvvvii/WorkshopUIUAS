@@ -115,6 +115,52 @@
         </div>
     </main>
 
+    <!-- Modal Update Order -->
+    <div id="editModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300" id="modalContent">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h3 class="font-poppins font-bold text-xl text-textMain">Update Transaksi</h3>
+                <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <form id="editOrderForm" class="space-y-5">
+                <input type="hidden" id="edit-order-id">
+                
+                <div>
+                    <label class="block text-sm font-semibold text-textMain mb-2">Order ID</label>
+                    <input type="text" id="edit-order-display" disabled class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-textMain mb-2">Status Pesanan</label>
+                    <select id="edit-status" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white font-medium text-textMain">
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-textMain mb-2">No Resi (Tracking Number)</label>
+                    <input type="text" id="edit-tracking-number" placeholder="Contoh: RESI-123456789" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white font-medium text-textMain">
+                    <p class="text-xs text-textMuted mt-1">Kosongkan jika belum dikirim.</p>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-gray-100">
+                    <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-[#e01970] transition-colors flex items-center gap-2">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function formatRupiah(n) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n);
@@ -133,27 +179,69 @@
             return `<span class="${cls} text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wide">${status}</span>`;
         }
 
-        function updateStatus(orderId, newStatus, selectEl) {
-            selectEl.disabled = true;
+        function openEditModal(orderId) {
+            const modal = document.getElementById('editModal');
+            const content = document.getElementById('modalContent');
+            
+            // fetch data pesanan untuk ambil nomor resi yang sudah ada
+            fetch(`../api/get_order_detail.php?id=${orderId}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('edit-order-id').value = orderId;
+                        document.getElementById('edit-order-display').value = '#' + orderId;
+                        document.getElementById('edit-status').value = data.data.status;
+                        document.getElementById('edit-tracking-number').value = data.data.tracking_number || '';
+                        
+                        modal.classList.remove('hidden');
+                        setTimeout(() => content.classList.remove('scale-95'), 10);
+                    } else {
+                        alert('Gagal mengambil detail pesanan: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Terjadi kesalahan saat mengambil detail pesanan.');
+                    console.error(err);
+                });
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            const content = document.getElementById('modalContent');
+            content.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('editOrderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('edit-order-id').value;
+            const newStatus = document.getElementById('edit-status').value;
+            const trackingNum = document.getElementById('edit-tracking-number').value;
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Menyimpan...';
+
             fetch('../api/update_order.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ order_id: orderId, status: newStatus })
+                body: JSON.stringify({ order_id: orderId, status: newStatus, tracking_number: trackingNum })
             })
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
-                    // Update badge in same row without full reload
-                    const row = selectEl.closest('tr');
-                    const badgeCell = row.querySelector('.status-badge-cell');
-                    if (badgeCell) badgeCell.innerHTML = statusBadge(newStatus);
+                    closeEditModal();
+                    loadOrders(); // reload table
                 } else {
                     alert('Gagal update status: ' + data.message);
                 }
             })
             .catch(() => alert('Terjadi error saat update status.'))
-            .finally(() => { selectEl.disabled = false; });
-        }
+            .finally(() => { 
+                submitBtn.disabled = false; 
+                submitBtn.innerHTML = 'Simpan Perubahan';
+            });
+        });
 
         function loadOrders() {
             const tbody = document.getElementById('orders-table-body');
@@ -192,10 +280,9 @@
                             <td class="px-6 py-4 font-bold text-textMain">${formatRupiah(order.total_price)}</td>
                             <td class="px-6 py-4 status-badge-cell">${statusBadge(order.status)}</td>
                             <td class="px-6 py-4 text-right">
-                                <select onchange="updateStatus(${order.id}, this.value, this)"
-                                    class="text-xs font-semibold border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
-                                    ${options}
-                                </select>
+                                <button onclick="openEditModal(${order.id})" class="text-xs font-semibold px-4 py-2 border border-gray-200 rounded-lg text-textMain hover:bg-gray-100 transition-colors">
+                                    Edit Resi & Status
+                                </button>
                             </td>
                         </tr>`;
                     }).join('');
