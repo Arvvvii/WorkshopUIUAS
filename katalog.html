@@ -61,6 +61,16 @@
                 
                 <!-- Actions -->
                 <div class="flex items-center space-x-5">
+                    <!-- Search Bar -->
+                    <div class="relative hidden lg:block">
+                        <form action="katalog.html" method="GET" class="relative">
+                            <input type="text" name="search" placeholder="Cari merchandise..." class="bg-[#F9F9F9] border border-gray-200 text-xs font-semibold px-4 py-2 pr-8 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 w-48 xl:w-64 transition-all">
+                            <button type="submit" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </button>
+                        </form>
+                    </div>
+                    
                     <!-- Cart Icon -->
                     <a href="keranjang.html" class="relative hover:text-primary transition-colors" aria-label="Cart">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
@@ -82,6 +92,12 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
             <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <form action="katalog.html" method="GET" class="relative my-2">
+                    <input type="text" name="search" placeholder="Cari merchandise..." class="w-full bg-[#F9F9F9] border border-gray-200 text-sm font-semibold px-4 py-2.5 pr-10 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                </form>
                 <a href="index.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Home</a>
                 <a href="katalog.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">Shop</a>
                 <a href="arsip-artikel.html" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-gray-50">News</a>
@@ -109,6 +125,14 @@
                 <!-- Sidebar Filters -->
                 <div class="w-full lg:w-1/4 flex-shrink-0">
                     <div id="filter-sidebar" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-28">
+                        <h3 class="font-poppins font-semibold text-lg mb-2">Search</h3>
+                        <div class="relative mb-6">
+                            <input id="catalog-search-input" type="text" placeholder="Cari merchandise..." class="w-full bg-[#F9F9F9] border border-gray-200 text-xs font-semibold px-4 py-2.5 pr-10 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                            <button id="catalog-search-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </button>
+                        </div>
+                        
                         <h3 class="font-poppins font-semibold text-lg mb-4">Categories</h3>
                         <div class="space-y-2 mt-4" id="category-filters">
                             <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" data-category="all" class="form-checkbox text-[#F72585] rounded w-5 h-5" checked> <span class="text-gray-600 hover:text-[#F72585] transition-colors">All Products</span></label>
@@ -246,6 +270,7 @@
 
                             const maxPrice = parseInt(document.getElementById('price-range').value);
                             const sortVal = document.getElementById('sort-select').value;
+                            const searchKeyword = (document.getElementById('catalog-search-input').value || '').toLowerCase().trim();
 
                             filteredProducts = allProducts.filter(p => {
                                 const pCat = (p.category_name || p.category || '').toLowerCase();
@@ -255,7 +280,12 @@
                                         return pCat.includes(fCat) || fCat.includes(pCat);
                                     });
                                 const priceMatch = Number(p.price) <= maxPrice;
-                                return catMatch && priceMatch;
+                                
+                                const nameMatch = (p.name || '').toLowerCase().includes(searchKeyword);
+                                const descMatch = (p.description || '').toLowerCase().includes(searchKeyword);
+                                const keywordMatch = searchKeyword === '' || nameMatch || descMatch;
+                                
+                                return catMatch && priceMatch && keywordMatch;
                             });
 
                             if (sortVal === 'Price: Low to High') {
@@ -274,6 +304,11 @@
                             // Parse URL Parameters
                             const urlParams = new URLSearchParams(window.location.search);
                             const categoryParam = urlParams.get('category');
+                            const searchParam = urlParams.get('search');
+                            
+                            if (searchParam) {
+                                document.getElementById('catalog-search-input').value = searchParam;
+                            }
                             
                             if (categoryParam) {
                                 const checkboxes = document.querySelectorAll('#filter-sidebar input[type="checkbox"]');
@@ -319,6 +354,8 @@
 
                             document.getElementById('apply-filters-btn').addEventListener('click', applyFiltersAndSort);
                             document.getElementById('sort-select').addEventListener('change', applyFiltersAndSort);
+                            document.getElementById('catalog-search-input').addEventListener('input', applyFiltersAndSort);
+                            document.getElementById('catalog-search-btn').addEventListener('click', applyFiltersAndSort);
 
                             const allCb = document.querySelector('#filter-sidebar input[data-category="all"]');
                             allCb.addEventListener('change', () => {

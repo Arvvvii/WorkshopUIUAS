@@ -12,6 +12,15 @@ $data = json_decode(file_get_contents('php://input'), true);
 $user_id = $data['user_id'] ?? null;
 $name = $data['name'] ?? null;
 $email = $data['email'] ?? null;
+$phone = $data['phone'] ?? null;
+$gender = $data['gender'] ?? null;
+$birthdate = $data['birthdate'] ?? null;
+$address_name = $data['address_name'] ?? null;
+$address_phone = $data['address_phone'] ?? null;
+$address_province = $data['address_province'] ?? null;
+$address_city = $data['address_city'] ?? null;
+$address_postal_code = $data['address_postal_code'] ?? null;
+$address_detail = $data['address_detail'] ?? null;
 $current_password = $data['current_password'] ?? null;
 $new_password = $data['new_password'] ?? null;
 
@@ -53,17 +62,17 @@ try {
             exit;
         }
 
-        // Update name, email, and password
-        $stmtUpdate = $pdo->prepare("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?");
-        $stmtUpdate->execute([$name, $email, $new_password, $user_id]);
+        // Update name, email, details, addresses, and password
+        $stmtUpdate = $pdo->prepare("UPDATE users SET name = ?, email = ?, phone = ?, gender = ?, birthdate = ?, address_name = ?, address_phone = ?, address_province = ?, address_city = ?, address_postal_code = ?, address_detail = ?, password = ? WHERE id = ?");
+        $stmtUpdate->execute([$name, $email, $phone, $gender, $birthdate, $address_name, $address_phone, $address_province, $address_city, $address_postal_code, $address_detail, $new_password, $user_id]);
     } else {
-        // Update only name and email
-        $stmtUpdate = $pdo->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
-        $stmtUpdate->execute([$name, $email, $user_id]);
+        // Update only name, email, details, and addresses
+        $stmtUpdate = $pdo->prepare("UPDATE users SET name = ?, email = ?, phone = ?, gender = ?, birthdate = ?, address_name = ?, address_phone = ?, address_province = ?, address_city = ?, address_postal_code = ?, address_detail = ? WHERE id = ?");
+        $stmtUpdate->execute([$name, $email, $phone, $gender, $birthdate, $address_name, $address_phone, $address_province, $address_city, $address_postal_code, $address_detail, $user_id]);
     }
 
     // 3. Fetch newly updated user data to return
-    $stmtUser = $pdo->prepare("SELECT id, name, email, role, created_at FROM users WHERE id = ?");
+    $stmtUser = $pdo->prepare("SELECT id, name, email, role, phone, gender, birthdate, address_name, address_phone, address_province, address_city, address_postal_code, address_detail, created_at FROM users WHERE id = ?");
     $stmtUser->execute([$user_id]);
     $updatedUser = $stmtUser->fetch();
 
