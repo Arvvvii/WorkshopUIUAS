@@ -88,6 +88,10 @@
                     <h3 class="font-poppins font-bold text-2xl text-textMain">Daftar Pengguna</h3>
                     <p class="text-sm text-textMuted font-medium mt-1">Manage platform members and permissions.</p>
                 </div>
+                <button onclick="openAddModal()" class="bg-primary text-white font-semibold py-2.5 px-5 rounded-xl hover:bg-[#e01970] transition-colors shadow-sm flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Tambah Pengguna
+                </button>
             </div>
 
             <!-- Table Card -->
@@ -112,7 +116,84 @@
         </div>
     </main>
 
+    <!-- Modal Tambah Pengguna -->
+    <div id="modalTambahPengguna" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-bgAlt">
+                <h3 class="font-poppins font-bold text-lg text-textMain">Tambah Pengguna Baru</h3>
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="addUserForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Nama Lengkap</label>
+                    <input type="text" name="name" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Email</label>
+                    <input type="email" name="email" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Password</label>
+                    <input type="password" name="password" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Role</label>
+                    <select name="role" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeAddModal()" class="px-5 py-2.5 border border-gray-200 rounded-xl font-semibold text-textMuted hover:bg-gray-50 transition-colors">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-primary text-white rounded-xl font-semibold hover:bg-[#e01970] transition-colors shadow-sm">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Pengguna -->
+    <div id="modalEditPengguna" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-bgAlt">
+                <h3 class="font-poppins font-bold text-lg text-textMain">Ubah Data Pengguna</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="editUserForm" class="p-6 space-y-4">
+                <input type="hidden" name="id" id="edit-user-id">
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Nama Lengkap</label>
+                    <input type="text" name="name" id="edit-user-name" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Email</label>
+                    <input type="email" name="email" id="edit-user-email" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Password Baru (Opsional)</label>
+                    <input type="password" name="password" id="edit-user-password" placeholder="Kosongkan jika tidak ingin mengubah" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-textMain">Role</label>
+                    <select name="role" id="edit-user-role" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-bgAlt text-sm font-medium">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 border border-gray-200 rounded-xl font-semibold text-textMuted hover:bg-gray-50 transition-colors">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 bg-primary text-white rounded-xl font-semibold hover:bg-[#e01970] transition-colors shadow-sm">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        let allUsers = [];
+
         function fetchUsers() {
             fetch('../api/get_users.php')
                 .then(res => res.json())
@@ -122,6 +203,7 @@
                         tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-textMuted">No users found.</td></tr>';
                         return;
                     }
+                    allUsers = data.data;
                     tbody.innerHTML = '';
                     data.data.forEach(user => {
                         const roleColor = user.role === 'admin' ? 'bg-red-100 text-red-700' : 'bg-purple-100 text-purple-700';
@@ -137,7 +219,7 @@
                             <td class="px-6 py-4"><span class="bg-green-50 text-green-600 px-2.5 py-1 rounded-md text-xs font-semibold">Active</span></td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <button onclick="alert('Fitur edit sedang dalam pengembangan')" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
+                                    <button onclick="openEditModal(${user.id})" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     </button>
                                     <button onclick="deleteUser(${user.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
@@ -167,6 +249,76 @@
                     }
                 });
         }
+
+        function openAddModal() {
+            document.getElementById('addUserForm').reset();
+            document.getElementById('modalTambahPengguna').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('modalTambahPengguna').classList.add('hidden');
+        }
+
+        function openEditModal(id) {
+            const user = allUsers.find(u => u.id == id);
+            if (!user) return;
+            document.getElementById('edit-user-id').value = user.id;
+            document.getElementById('edit-user-name').value = user.name;
+            document.getElementById('edit-user-email').value = user.email;
+            document.getElementById('edit-user-role').value = user.role;
+            document.getElementById('edit-user-password').value = '';
+            document.getElementById('modalEditPengguna').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('modalEditPengguna').classList.add('hidden');
+        }
+
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((v, k) => data[k] = v);
+
+            fetch('../api/add_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                if (resData.success) {
+                    alert('Pengguna berhasil ditambahkan!');
+                    closeAddModal();
+                    fetchUsers();
+                } else {
+                    alert('Error: ' + resData.message);
+                }
+            });
+        });
+
+        document.getElementById('editUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((v, k) => data[k] = v);
+
+            fetch('../api/update_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(resData => {
+                if (resData.success) {
+                    alert('Data pengguna berhasil diperbarui!');
+                    closeEditModal();
+                    fetchUsers();
+                } else {
+                    alert('Error: ' + resData.message);
+                }
+            });
+        });
 
         document.addEventListener('DOMContentLoaded', fetchUsers);
     </script>
