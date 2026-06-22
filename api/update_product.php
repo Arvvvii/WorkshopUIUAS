@@ -1,5 +1,13 @@
 <?php
+session_start();
 require_once 'db.php';
+
+// Proteksi IDOR
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Forbidden. Admin access required.']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
